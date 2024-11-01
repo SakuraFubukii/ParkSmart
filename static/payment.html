@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment - Parking Space Booking</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+      .ticket {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin: 20px 0;
+        display: none; /* Initially hidden */
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="index.html">Home</a>
+      <a class="navbar-brand" href="booking.html">Booking</a>
+      <div class="collapse navbar-collapse">
+        <a class="btn btn-outline-light ml-auto" href="logout.html" id="logout">Logout</a>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <h1>Payment Details</h1>
+
+      <h2>Booking Summary</h2>
+      <p><strong>Parking Lot:</strong> <span id="parkingLotName">Disneyland Parking Lot</span></p>
+      <p><strong>Selected Date:</strong> <span id="selectedDate"></span></p>
+      <p><strong>Selected Time:</strong> <span id="selectedTime"></span></p>
+      <p><strong>Selected Parking Space:</strong> <span id="selectedSpace"></span></p>
+      <p><strong>Total Cost:</strong> <span id="totalCost">0</span> USD</p>
+
+      <h2>Payment Information</h2>
+      <form id="paymentForm">
+        <div class="form-group">
+          <label for="cardNumber">Card Number</label>
+          <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456" required />
+        </div>
+        <div class="form-group">
+          <label for="cardExpiry">Expiry Date</label>
+          <input type="text" class="form-control" id="cardExpiry" placeholder="MM/YY" required />
+        </div>
+        <div class="form-group">
+          <label for="cardCVC">CVC</label>
+          <input type="text" class="form-control" id="cardCVC" placeholder="123" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Pay Now</button>
+      </form>
+
+      <div class="ticket mt-4" id="ticket">
+        <h3>Your Electronic Ticket</h3>
+        <p>Thank you for your booking!</p>
+        <p><strong>Parking Lot:</strong> <span id="ticketParkingLotName"></span></p>
+        <p><strong>Booking Date:</strong> <span id="ticketDate"></span></p>
+        <p><strong>Booking Time:</strong> <span id="ticketTime"></span></p>
+        <p><strong>Parking Space:</strong> <span id="ticketSpace"></span></p>
+        <p><strong>Cost:</strong> <span id="ticketCost"></span> USD</p>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Simulated booking details
+      const parkingLotName = 'Disneyland Parking Lot';
+      const selectedDate = '2023-11-01'; // Example date
+      const selectedTime = '10:00'; // Example time
+      const selectedSpace = 'A1'; // Example parking space
+      const totalCost = 20; // Example cost
+
+      // Populate booking details
+      document.getElementById('parkingLotName').textContent = parkingLotName;
+      document.getElementById('selectedDate').textContent = selectedDate;
+      document.getElementById('selectedTime').textContent = selectedTime;
+      document.getElementById('selectedSpace').textContent = selectedSpace;
+      document.getElementById('totalCost').textContent = totalCost;
+
+      document.getElementById('paymentForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Simulate payment processing
+        const isPaymentSuccessful = Math.random() > 0.2; // 80% chance of success
+
+        if (isPaymentSuccessful) {
+          // If payment is successful
+          alert('Payment Successful!');
+          document.getElementById('ticket').style.display = 'block'; // Show ticket
+          document.getElementById('ticketParkingLotName').textContent = parkingLotName;
+          document.getElementById('ticketDate').textContent = selectedDate;
+          document.getElementById('ticketTime').textContent = selectedTime;
+          document.getElementById('ticketSpace').textContent = selectedSpace;
+          document.getElementById('ticketCost').textContent = totalCost;
+          // Here you would also update the order status in the backend
+        } else {
+          alert('Payment Failed. Please try again.');
+        }
+      });
+    </script>
+  </body>
+</html>

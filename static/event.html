@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Management - Parking Management System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="index.html">Home</a>
+      <div class="collapse navbar-collapse">
+        <a class="btn btn-outline-light ml-auto" href="logout.html" id="logout">Logout</a>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <h1>Event Management</h1>
+
+      <h2>Create New Event</h2>
+      <form id="eventForm">
+        <div class="form-group">
+          <label for="eventTitle">Event Title</label>
+          <input type="text" class="form-control" id="eventTitle" required />
+        </div>
+        <div class="form-group">
+          <label for="eventDate">Date and Time</label>
+          <input type="datetime-local" class="form-control" id="eventDate" required />
+        </div>
+        <div class="form-group">
+          <label for="eventVenue">Venue</label>
+          <input type="text" class="form-control" id="eventVenue" required />
+        </div>
+        <div class="form-group">
+          <label for="eventDescription">Description</label>
+          <textarea class="form-control" id="eventDescription" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Event</button>
+      </form>
+
+      <h2 class="mt-4">Existing Events</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Date/Time</th>
+            <th>Venue</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="eventList">
+          <!-- 事件列表将通过 JavaScript 动态填充 -->
+        </tbody>
+      </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // 示例事件数据
+      let events = [];
+
+      document.getElementById('eventForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const title = document.getElementById('eventTitle').value;
+        const date = document.getElementById('eventDate').value;
+        const venue = document.getElementById('eventVenue').value;
+        const description = document.getElementById('eventDescription').value;
+
+        const newEvent = { title, date, venue, description };
+        events.push(newEvent);
+        displayEvents();
+        this.reset(); // 清空表单
+      });
+
+      function displayEvents() {
+        const eventList = document.getElementById('eventList');
+        eventList.innerHTML = ''; // 清空列表
+
+        events.forEach((event, index) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+                    <td>${event.title}</td>
+                    <td>${new Date(event.date).toLocaleString()}</td>
+                    <td>${event.venue}</td>
+                    <td>${event.description}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="deleteEvent(${index})">Delete</button>
+                    </td>
+                `;
+          eventList.appendChild(row);
+        });
+      }
+
+      function deleteEvent(index) {
+        events.splice(index, 1);
+        displayEvents();
+      }
+    </script>
+  </body>
+</html>
