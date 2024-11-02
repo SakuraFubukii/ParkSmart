@@ -58,7 +58,6 @@
 
       <h2>Select Parking Space</h2>
       <svg class="map" viewBox="0 0 600 400">
-        <!-- 生成至少 30 个停车位 -->
         <rect x="50" y="50" width="100" height="50" class="seat available" data-price="20" />
         <rect x="160" y="50" width="100" height="50" class="seat occupied" />
         <rect x="270" y="50" width="100" height="50" class="seat available" data-price="20" />
@@ -131,7 +130,6 @@
 
         if (totalPrice > 0 && selectedDate && selectedTime) {
           alert(`Booking Successful!\nDate: ${selectedDate}\nTime: ${selectedTime}\nTotal Price: ${totalPrice} USD`);
-          // Here you can add code to send booking information to the backend
         } else {
           alert('Please ensure you have selected a parking space, date, and time.');
         }

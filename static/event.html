@@ -49,16 +49,13 @@
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody id="eventList">
-          <!-- 事件列表将通过 JavaScript 动态填充 -->
-        </tbody>
+        <tbody id="eventList"></tbody>
       </table>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      // 示例事件数据
       let events = [];
 
       document.getElementById('eventForm').addEventListener('submit', function (event) {
@@ -72,12 +69,12 @@
         const newEvent = { title, date, venue, description };
         events.push(newEvent);
         displayEvents();
-        this.reset(); // 清空表单
+        this.reset();
       });
 
       function displayEvents() {
         const eventList = document.getElementById('eventList');
-        eventList.innerHTML = ''; // 清空列表
+        eventList.innerHTML = '';
 
         events.forEach((event, index) => {
           const row = document.createElement('tr');
