@@ -3,8 +3,6 @@ import session from 'express-session';
 import path from 'path';
 
 const app = express();
-const PORT = 8080;
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -27,6 +25,7 @@ app.get('/payment', (req, res) => {
   res.sendFile(path.join(__dirname, 'payment.html'));
 });
 
+const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Server started at http://127.0.0.1:${PORT}`);
 });

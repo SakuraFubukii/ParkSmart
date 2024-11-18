@@ -1,15 +1,15 @@
 {
-    "extends": ["eslint:recommended", "prettier"],
-    "parserOptions": {
+  "extends": ["eslint:recommended", "prettier"],
+  "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": 2020
-    },
-    "root": true,
-    "env": {
+  },
+  "root": true,
+  "env": {
     "node": true,
     "es6": true
-    },
-    "rules": {
+  },
+  "rules": {
     "no-unused-vars": "off"
-    }
+  }
 }

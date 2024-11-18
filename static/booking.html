@@ -6,25 +6,28 @@
     <title>Booking - Parking Space</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <style>
-      .map {
-        width: 100%;
-        max-width: 600px;
-        margin: auto;
+      .hidden {
+        display: none;
       }
-      .seat {
+      .park {
         cursor: pointer;
-        transition: fill 0.3s;
       }
-      .available {
+      .park.available {
         fill: green;
       }
-      .occupied {
+      .park.occupied {
         fill: red;
       }
-      .selected {
+      .park.disabled {
+        fill: gray;
+      }
+      .park.selected {
         fill: yellow;
       }
     </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/booking.js" defer></script>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -37,103 +40,108 @@
 
     <div class="container mt-4">
       <h1>Book a Parking Space</h1>
+      <form>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="date">Select Date:</label>
+            <input type="date" class="form-control" id="date" required style="width: 150px;"/>
+          </div>
 
-      <div class="form-group">
-        <label for="parkingLotSelect">Select Parking Lot:</label>
-        <select class="form-control" id="parkingLotSelect">
-          <option value="1">Disneyland Parking Lot</option>
-          <option value="2">City Center Parking Lot</option>
-        </select>
-      </div>
+          <div class="form-group col-md-4">
+            <label>Select Duration:</label>
+            <div class="form-check">
+              <input type="radio" id="halfDay" name="duration" value="half" class="form-check-input" checked />
+              <label for="halfDay" class="form-check-label">Half Day (8 AM to 8 PM)</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" id="fullDay" name="duration" value="full" class="form-check-input" />
+              <label for="fullDay" class="form-check-label">Full Day</label>
+            </div>
+          </div>
 
-      <h2>Select Date and Time</h2>
-      <div class="form-group">
-        <label for="date">Select Date:</label>
-        <input type="date" class="form-control" id="date" required />
-      </div>
-      <div class="form-group">
-        <label for="time">Select Time:</label>
-        <input type="time" class="form-control" id="time" required />
-      </div>
+          <div class="form-group col-md-4">
+            <label for="parkingLotSelect">Select Parking Lot:</label>
+            <select class="form-control" id="parkingLotSelect" style="width: 150px;">
+              <option value="platform">Platform</option>
+              <option value="G">G Level</option>
+              <option value="-1">-1 Level</option>
+            </select>
+          </div>
+        </div>
+        
+        <h2>Select Parking Space</h2>
+        <div id="maps">
+          <svg class="map" id="platformMap" viewBox="0 0 600 300">
+            <rect x="65" y="50" width="70" height="35" parkid="1" class="park" />
+            <rect x="150" y="50" width="70" height="35" parkid="2" class="park" />
+            <rect x="275" y="50" width="70" height="35" parkid="3" class="park" />
+            <rect x="360" y="50" width="70" height="35" parkid="4" class="park" />
+            <rect x="480" y="50" width="70" height="35" parkid="5" class="park" />
 
-      <h2>Select Parking Space</h2>
-      <svg class="map" viewBox="0 0 600 400">
-        <rect x="50" y="50" width="100" height="50" class="seat available" data-price="20" />
-        <rect x="160" y="50" width="100" height="50" class="seat occupied" />
-        <rect x="270" y="50" width="100" height="50" class="seat available" data-price="20" />
-        <rect x="380" y="50" width="100" height="50" class="seat available" data-price="20" />
-        <rect x="490" y="50" width="100" height="50" class="seat occupied" />
+            <rect x="65" y="100" width="70" height="35" parkid="6" class="park" />
+            <rect x="150" y="100" width="70" height="35" parkid="7" class="park" />
+            <rect x="275" y="100" width="70" height="35" parkid="8" class="park" />
+            <rect x="360" y="100" width="70" height="35" parkid="9" class="park" />
+            <rect x="480" y="100" width="70" height="35" parkid="10" class="park" />
 
-        <rect x="50" y="120" width="100" height="50" class="seat available" data-price="20" />
-        <rect x="160" y="120" width="100" height="50" class="seat occupied" />
-        <rect x="270" y="120" width="100" height="50" class="seat available" data-price="20" />
-        <rect x="380" y="120" width="100" height="50" class="seat available" data-price="20" />
-        <rect x="490" y="120" width="100" height="50" class="seat occupied" />
+            <rect x="65" y="185" width="70" height="35" parkid="11" class="park" />
+            <rect x="150" y="185" width="70" height="35" parkid="12" class="park" />
+            <rect x="275" y="185" width="70" height="35" parkid="13" class="park" />
+            <rect x="360" y="185" width="70" height="35" parkid="14" class="park" />
+            <rect x="480" y="185" width="70" height="35" parkid="15" class="park" />
 
-        <rect x="50" y="190" width="100" height="50" class="seat available" data-price="20" />
-        <rect x="160" y="190" width="100" height="50" class="seat occupied" />
-        <rect x="270" y="190" width="100" height="50" class="seat available" data-price="20" />
-        <rect x="380" y="190" width="100" height="50" class="seat available" data-price="20" />
-        <rect x="490" y="190" width="100" height="50" class="seat occupied" />
+            <rect x="65" y="235" width="70" height="35" parkid="16" class="park" />
+            <rect x="150" y="235" width="70" height="35" parkid="17" class="park" />
+            <rect x="275" y="235" width="70" height="35" parkid="18" class="park" />
+            <rect x="360" y="235" width="70" height="35" parkid="19" class="park" />
+            <rect x="480" y="235" width="70" height="35" parkid="20" class="park" />
+          </svg>
 
-        <rect x="50" y="260" width="100" height="50" class="seat available" data-price="20" />
-        <rect x="160" y="260" width="100" height="50" class="seat occupied" />
-        <rect x="270" y="260" width="100" height="50" class="seat available" data-price="20" />
-        <rect x="380" y="260" width="100" height="50" class="seat available" data-price="20" />
-        <rect x="490" y="260" width="100" height="50" class="seat occupied" />
+          <svg class="map hidden" id="GMap" viewBox="0 0 600 300">
+            <rect x="125" y="50" width="70" height="35" parkid="21" class="park" />
+            <rect x="205" y="50" width="70" height="35" parkid="22" class="park" />
+            <rect x="325" y="50" width="70" height="35" parkid="23" class="park" />
+            <rect x="405" y="50" width="70" height="35" parkid="24" class="park" />
 
-        <rect x="50" y="330" width="100" height="50" class="seat available" data-price="20" />
-        <rect x="160" y="330" width="100" height="50" class="seat occupied" />
-        <rect x="270" y="330" width="100" height="50" class="seat available" data-price="20" />
-        <rect x="380" y="330" width="100" height="50" class="seat available" data-price="20" />
-        <rect x="490" y="330" width="100" height="50" class="seat occupied" />
+            <rect x="125" y="100" width="70" height="35" parkid="25" class="park" />
+            <rect x="205" y="100" width="70" height="35" parkid="26" class="park" />
+            <rect x="325" y="100" width="70" height="35" parkid="27" class="park" />
+            <rect x="405" y="100" width="70" height="35" parkid="28" class="park" />
 
-        <rect x="50" y="400" width="100" height="50" class="seat available" data-price="20" />
-        <rect x="160" y="400" width="100" height="50" class="seat occupied" />
-        <rect x="270" y="400" width="100" height="50" class="seat available" data-price="20" />
-        <rect x="380" y="400" width="100" height="50" class="seat available" data-price="20" />
-        <rect x="490" y="400" width="100" height="50" class="seat occupied" />
-      </svg>
+            <rect x="125" y="150" width="70" height="35" parkid="29" class="park" />
+            <rect x="205" y="150" width="70" height="35" parkid="30" class="park" />
+            <rect x="325" y="150" width="70" height="35" parkid="31" class="park" />
+            <rect x="405" y="150" width="70" height="35" parkid="32" class="park" />
 
-      <div class="price mt-3">Price: <span id="totalPrice">0</span> USD</div>
+            <rect x="125" y="200" width="70" height="35" parkid="33" class="park" />
+            <rect x="205" y="200" width="70" height="35" parkid="34" class="park" />
+            <rect x="325" y="200" width="70" height="35" parkid="35" class="park" />
+            <rect x="405" y="200" width="70" height="35" parkid="36" class="park" />
+          </svg>
 
-      <button class="btn btn-primary mt-3" id="confirmBooking">Confirm Booking</button>
+          <svg class="map hidden" id="-1Map" viewBox="0 0 600 300">
+            <rect x="170" y="50" width="35" height="70" parkid="37" class="park" />
+            <rect x="215" y="50" width="35" height="70" parkid="38" class="park" />
+            <rect x="260" y="50" width="35" height="70" parkid="39" class="park" />
+            <rect x="305" y="50" width="35" height="70" parkid="40" class="park" />
+            <rect x="350" y="50" width="35" height="70" parkid="41" class="park" />
+            <rect x="395" y="50" width="35" height="70" parkid="42" class="park" />
+
+            <rect x="170" y="170" width="35" height="70" parkid="43" class="park" />
+            <rect x="215" y="170" width="35" height="70" parkid="44" class="park" />
+            <rect x="260" y="170" width="35" height="70" parkid="45" class="park" />
+            <rect x="305" y="170" width="35" height="70" parkid="46" class="park" />
+            <rect x="350" y="170" width="35" height="70" parkid="47" class="park" />
+            <rect x="395" y="170" width="35" height="70" parkid="48" class="park" />
+          </svg>
+        </div>
+        <div class="price mt-3">Price: <span id="totalPrice">0</span> USD</div>
+        <button class="btn btn-primary mt-3" id="pay">Pay</button>
+      </form>
+      
+      
+
+      
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      const seats = document.querySelectorAll('.seat');
-      const totalPriceElement = document.getElementById('totalPrice');
-      let totalPrice = 0;
-
-      seats.forEach((seat) => {
-        seat.addEventListener('click', function () {
-          if (this.classList.contains('available')) {
-            if (this.classList.contains('selected')) {
-              this.classList.remove('selected');
-              totalPrice -= parseInt(this.dataset.price);
-            } else {
-              this.classList.add('selected');
-              totalPrice += parseInt(this.dataset.price);
-            }
-            totalPriceElement.textContent = totalPrice;
-          } else if (this.classList.contains('occupied')) {
-            alert('This parking space is occupied.');
-          }
-        });
-      });
-
-      document.getElementById('confirmBooking').addEventListener('click', function () {
-        const selectedDate = document.getElementById('date').value;
-        const selectedTime = document.getElementById('time').value;
-
-        if (totalPrice > 0 && selectedDate && selectedTime) {
-          alert(`Booking Successful!\nDate: ${selectedDate}\nTime: ${selectedTime}\nTotal Price: ${totalPrice} USD`);
-        } else {
-          alert('Please ensure you have selected a parking space, date, and time.');
-        }
-      });
-    </script>
   </body>
 </html>
