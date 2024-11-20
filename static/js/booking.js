@@ -10,6 +10,9 @@ async function fetchParkingData() {
   }
 }
 
+// Call the function to fetch data and update statuses
+fetchParkingData();
+
 // update parking spot statuses
 function updateParkingStatus(data) {
   data.forEach((parkingSpot) => {
@@ -52,5 +55,42 @@ document.getElementById('parkingLotSelect').addEventListener('change', function 
   fetchParkingData();
 });
 
-// Call the function to fetch data and update statuses
-fetchParkingData();
+document.addEventListener('DOMContentLoaded', () => {
+  const halfDayOption = document.getElementById('halfDay');
+  const fullDayOption = document.getElementById('fullDay');
+  const totalPriceElement = document.getElementById('totalPrice');
+  const payButton = document.getElementById('pay');
+  const dateInput = document.getElementById('date');
+  const parkingLotSelect = document.getElementById('parkingLotSelect');
+
+  //update the price
+  function updatePrice() {
+    if (halfDayOption.checked) {
+      totalPriceElement.textContent = '50';
+    } else {
+      totalPriceElement.textContent = '100';
+    }
+  }
+
+  halfDayOption.addEventListener('change', updatePrice);
+  fullDayOption.addEventListener('change', updatePrice);
+
+  updatePrice();
+
+  // Event listener for the Pay button
+  payButton.addEventListener('click', (event) => {
+    event.preventDefault(); // Prevent form submission for validation
+    const selectedDate = dateInput.value;
+    const selectedParkingLot = parkingLotSelect.value;
+
+    if (!selectedDate) {
+      alert('Please select a date.');
+      return;
+    }
+
+    if (!selectedParkingLot) {
+      alert('Please select a parking lot.');
+      return;
+    }
+  });
+});
