@@ -1,6 +1,7 @@
 import express from 'express';
 import session from 'express-session';
 import path from 'path';
+import booking from './booking.js';
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -16,6 +17,7 @@ app.use(
 );
 
 app.use(express.static('static'));
+app.use('/book', booking);
 
 app.get('/booking', (req, res) => {
   res.sendFile(path.join(__dirname, 'booking.html'));
