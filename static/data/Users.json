@@ -1,0 +1,9 @@
+[
+  {
+    "_id": "zhangsan",
+    "username": "张三",
+    "phone": "+86 18888888888",
+    "email": "zhangsan@gmail.com",
+    "password_hash": "hashed_password_here"
+  }
+]

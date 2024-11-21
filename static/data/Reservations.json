@@ -1,0 +1,10 @@
+[
+  {
+    "_id": "res_1",
+    "user_id": "zhangsan",
+    "parkId": "1",
+    "date": "2024-11-30",
+    "duration": "half",
+    "payment_status": "completed"
+  }
+]

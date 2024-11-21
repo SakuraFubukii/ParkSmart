@@ -4,33 +4,52 @@ async function fetchParkingData() {
     const response = await fetch('/data/ParkingSpaces.json');
     const parkingData = await response.json();
     console.log('Fetched parking data:', parkingData);
-    updateParkingStatus(parkingData);
+    await updateParkingStatus(parkingData);
+    return parkingData; // 返回停车位数据
   } catch (error) {
     console.error('Error fetching parking data:', error);
   }
 }
 
-// Call the function to fetch data and update statuses
-fetchParkingData();
+// Fetch reservation data
+async function fetchReservationData() {
+  try {
+    const response = await fetch('/data/Reservations.json');
+    const reservationData = await response.json();
+    console.log('Fetched reservation data:', reservationData);
+    return reservationData;
+  } catch (error) {
+    console.error('Error fetching reservation data:', error);
+    return [];
+  }
+}
 
 // Update parking spot statuses
-function updateParkingStatus(data) {
-  data.forEach((parkingSpot) => {
+async function updateParkingStatus(parkingData) {
+  const reservations = await fetchReservationData();
+  const dateInput = document.getElementById('date').value;
+
+  parkingData.forEach((parkingSpot) => {
     const rect = document.querySelector(`rect[parkid="${parkingSpot.parkid}"]`);
     if (rect) {
       rect.classList.remove('available', 'occupied', 'selected');
-      rect.classList.add(parkingSpot.status);
 
-      // When selected
+      const isOccupied = reservations.some((reservation) => {
+        const parkIdMatch = String(reservation.parkId) === String(parkingSpot.parkid);
+        const dateMatch = String(reservation.date) === dateInput;
+        return parkIdMatch && dateMatch;
+      });
+
+      if (isOccupied) {
+        rect.classList.add('occupied');
+      } else {
+        rect.classList.add('available');
+      }
+
+      // Add click event listener for selecting parking spots
       rect.addEventListener('click', () => {
-        if (parkingSpot.status === 'occupied') {
-          alert('This parking spot is occupied. Please choose another one.');
-          return; // Exit if occupied
-        }
-
-        if (parkingSpot.status === 'disabled') {
-          alert('This parking spot is under repair. Please choose another one.');
-          return; // Exit if disabled
+        if (isOccupied) {
+          return;
         }
 
         // Remove selection from other spaces
@@ -39,9 +58,8 @@ function updateParkingStatus(data) {
         });
 
         // Select the clicked space if available
-        if (parkingSpot.status === 'available') {
-          rect.classList.add('selected');
-        }
+        rect.classList.add('selected');
+        updatePrice(parkingData); // Update price without duration options
       });
     }
   });
@@ -54,51 +72,64 @@ document.getElementById('parkingLotSelect').addEventListener('change', function 
     map.classList.add('hidden');
   });
   document.getElementById(`${selectedLot}Map`).classList.remove('hidden');
-  fetchParkingData();
+  fetchParkingData(); // Fetch parking data for the selected map
 });
 
+// Update the price based on selected options and parking data
+function updatePrice(parkingData) {
+  const selectedParkingSpot = document.querySelector('.park.selected');
+  const totalPriceElement = document.getElementById('totalPrice');
+
+  const halfDayOption = document.getElementById('halfDay'); // Ensure these are defined here
+  const fullDayOption = document.getElementById('fullDay');
+
+  if (selectedParkingSpot) {
+    const parkId = selectedParkingSpot.getAttribute('parkid');
+    const parkingInfo = parkingData.find((spot) => spot.parkid == parkId);
+
+    if (parkingInfo) {
+      const price = halfDayOption.checked ? parkingInfo.halfday_price : parkingInfo.fullday_price;
+      totalPriceElement.textContent = price;
+    }
+  } else {
+    totalPriceElement.textContent = '0'; // No parking spot selected
+  }
+}
+
 // DOMContentLoaded event to ensure elements are available
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const halfDayOption = document.getElementById('halfDay');
   const fullDayOption = document.getElementById('fullDay');
-  const totalPriceElement = document.getElementById('totalPrice');
-  const payButton = document.getElementById('pay');
   const dateInput = document.getElementById('date');
-  const parkingSpaces = document.querySelectorAll('.park');
-  let parkId = null;
 
-  // Update the price
-  function updatePrice() {
-    totalPriceElement.textContent = halfDayOption.checked ? '50' : '100';
-  }
+  const parkingData = await fetchParkingData();
 
-  halfDayOption.addEventListener('change', updatePrice);
-  fullDayOption.addEventListener('change', updatePrice);
-  updatePrice();
+  // Update the price when options change
+  halfDayOption.addEventListener('change', () => updatePrice(parkingData));
+  fullDayOption.addEventListener('change', () => updatePrice(parkingData));
 
-  // Get the selected park ID
-  parkingSpaces.forEach((space) => {
-    space.addEventListener('click', () => {
-      parkingSpaces.forEach((s) => s.classList.remove('selected'));
-      space.classList.add('selected');
-      parkId = space.getAttribute('parkid');
-    });
+  // Add event listener for date change
+  dateInput.addEventListener('change', async () => {
+    await fetchParkingData(); // Refresh parking status based on new date
   });
 
-  // submission handling
+  // Submission handling
   document.getElementById('pay').addEventListener('click', async (event) => {
     event.preventDefault();
     const date = dateInput.value;
+    const selectedParkingSpot = document.querySelector('.park.selected');
 
     if (!date) {
       alert('Please select a date.');
       return;
     }
 
-    if (parkId === null) {
-      alert('Please select a parking lot.');
+    if (!selectedParkingSpot) {
+      alert('Please select a parking spot.');
       return;
     }
+
+    const parkId = selectedParkingSpot.getAttribute('parkid');
     console.log('Selected Date:', date);
     console.log('Selected Park ID:', parkId);
 
@@ -106,6 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formData = new FormData();
     formData.append('date', date);
     formData.append('parkId', parkId);
+    formData.append('duration', halfDayOption.checked ? 'half' : 'full');
 
     try {
       const response = await fetch('/book', {
@@ -116,7 +148,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const result = await response.json();
       console.log('Response:', result);
       if (response.ok) {
-        window.location.href = `payment.html?date=${encodeURIComponent(result.date)}&parkId=${encodeURIComponent(result.parkId)}`;
+        const queryParams = new URLSearchParams({
+          date: result.date,
+          parkId: result.parkId,
+          duration: result.duration,
+        }).toString();
+
+        window.location.href = `payment.html?${queryParams}`;
       } else {
         alert('Booking failed.');
       }
