@@ -2,6 +2,12 @@ import express from 'express';
 import session from 'express-session';
 import path from 'path';
 import booking from './booking.js';
+import parkingManagement from './parkingManagement.js';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -18,6 +24,8 @@ app.use(
 
 app.use(express.static('static'));
 app.use('/book', booking);
+app.use('/manage', parkingManagement);
+app.use('/data', express.static(path.join(__dirname, 'data')));
 
 app.get('/booking', (req, res) => {
   res.sendFile(path.join(__dirname, 'booking.html'));
