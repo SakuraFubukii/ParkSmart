@@ -17,6 +17,7 @@
       }
       .park.occupied {
         fill: red;
+        cursor: not-allowed;
         pointer-events: none;
       }
       .park.disabled {
@@ -28,6 +29,11 @@
       .price {
         font-size: 24px;
         font-weight: bold;
+      }
+      .price-text {
+        font-size: 14px;
+        fill: black;
+        text-anchor: middle;
       }
     </style>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -68,8 +74,8 @@
             <label for="parkingLotSelect">Select Parking Lot:</label>
             <select class="form-control" id="parkingLotSelect" style="width: 150px">
               <option value="platform">Platform</option>
-              <option value="G">G Level</option>
-              <option value="-1">-1 Level</option>
+              <option value="G">Ground Floor</option>
+              <option value="-1">Basement 1</option>
             </select>
           </div>
         </div>

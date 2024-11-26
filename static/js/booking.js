@@ -5,7 +5,7 @@ async function fetchParkingData() {
     const parkingData = await response.json();
     console.log('Fetched parking data:', parkingData);
     await updateParkingStatus(parkingData);
-    return parkingData; // 返回停车位数据
+    return parkingData;
   } catch (error) {
     console.error('Error fetching parking data:', error);
   }
@@ -80,7 +80,7 @@ function updatePrice(parkingData) {
   const selectedParkingSpot = document.querySelector('.park.selected');
   const totalPriceElement = document.getElementById('totalPrice');
 
-  const halfDayOption = document.getElementById('halfDay'); // Ensure these are defined here
+  const halfDayOption = document.getElementById('halfDay');
   const fullDayOption = document.getElementById('fullDay');
 
   if (selectedParkingSpot) {
@@ -93,6 +93,34 @@ function updatePrice(parkingData) {
     }
   } else {
     totalPriceElement.textContent = '0'; // No parking spot selected
+  }
+}
+
+//update price in the parkspaces
+function updatePrices(parkingData) {
+  const selectedParkingSpot = document.querySelector('.park.selected');
+  if (!selectedParkingSpot) return;
+
+  const halfDayOption = document.getElementById('halfDay');
+  const selectedPriceType = halfDayOption.checked ? 'halfday_price' : 'fullday_price';
+
+  const parkId = selectedParkingSpot.getAttribute('parkid');
+  const parkingInfo = parkingData.find((spot) => spot.parkid == parkId);
+
+  if (parkingInfo) {
+    const price = parkingInfo[selectedPriceType];
+    selectedParkingSpot.setAttribute('title', `Price: ${price}元`);
+    const priceText = selectedParkingSpot.querySelector('.price');
+    if (priceText) {
+      priceText.textContent = `${price}元`;
+    } else {
+      const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      textElement.setAttribute('x', parseFloat(selectedParkingSpot.getAttribute('x')) + 5);
+      textElement.setAttribute('y', parseFloat(selectedParkingSpot.getAttribute('y')) + 25);
+      textElement.setAttribute('class', 'price');
+      textElement.textContent = `${price}元`;
+      selectedParkingSpot.appendChild(textElement);
+    }
   }
 }
 

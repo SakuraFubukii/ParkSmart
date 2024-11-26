@@ -3,171 +3,242 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Parking Space Management</title>
+    <title>Booking - Parking Space</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <style>
-      .map {
-        width: 100%;
-        max-width: 800px;
-        margin: auto;
-        border: 1px solid #ccc;
+      .hidden {
+        display: none;
       }
-      .seat {
+      .park {
         cursor: pointer;
-        transition: fill 0.3s;
       }
-      .available {
+      .park.available {
         fill: green;
       }
-      .occupied {
+      .park.occupied {
         fill: red;
       }
-      .selected {
+      .park.disabled {
+        fill: gray;
+      }
+      .park.selected {
         fill: yellow;
       }
       .price {
-        margin-top: 20px;
-        font-size: 24px;
+        font-size: 12px;
+        font-weight: bold;
       }
     </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/parkingManagement.js" defer></script>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="index.html">Home</a>
+      <a class="navbar-brand" href="booking.html">Booking</a>
       <div class="collapse navbar-collapse">
-        <span class="navbar-text ml-auto">Admin Access: Parking Management</span>
-        <a class="btn btn-outline-light ml-2" href="logout.html" id="logout">Logout</a>
+        <a class="btn btn-outline-light ml-auto" href="logout.html" id="logout">Logout</a>
       </div>
     </nav>
 
     <div class="container mt-4">
-      <h1>Parking Space Management</h1>
+      <form id="bookingForm">
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="date">Select Date:</label>
+            <input type="date" class="form-control" id="date" />
+          </div>
 
-      <h2>Parking Map</h2>
-      <svg class="map" viewBox="0 0 600 500">
-        <rect x="50" y="50" width="100" height="50" class="seat available" data-id="1" />
-        <rect x="160" y="50" width="100" height="50" class="seat occupied" data-id="2" />
-        <rect x="270" y="50" width="100" height="50" class="seat available" data-id="3" />
-        <rect x="380" y="50" width="100" height="50" class="seat available" data-id="4" />
-        <rect x="490" y="50" width="100" height="50" class="seat occupied" data-id="5" />
+          <div class="form-group col-md-4">
+            <label>Select Duration:</label>
+            <div class="form-check">
+              <input type="radio" id="halfDay" name="duration" value="half" class="form-check-input" checked />
+              <label for="halfDay" class="form-check-label">Half Day (8 AM to 8 PM)</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" id="fullDay" name="duration" value="full" class="form-check-input" />
+              <label for="fullDay" class="form-check-label">Full Day</label>
+            </div>
+          </div>
+        </div>
 
-        <rect x="50" y="110" width="100" height="50" class="seat available" data-id="6" />
-        <rect x="160" y="110" width="100" height="50" class="seat occupied" data-id="7" />
-        <rect x="270" y="110" width="100" height="50" class="seat available" data-id="8" />
-        <rect x="380" y="110" width="100" height="50" class="seat available" data-id="9" />
-        <rect x="490" y="110" width="100" height="50" class="seat occupied" data-id="10" />
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="parkingStatus">Parking Status:</label>
+            <select class="form-control" id="parkingStatus">
+              <option value="available">Available</option>
+              <option value="occupied">Occupied</option>
+            </select>
+          </div>
 
-        <rect x="50" y="170" width="100" height="50" class="seat available" data-id="11" />
-        <rect x="160" y="170" width="100" height="50" class="seat occupied" data-id="12" />
-        <rect x="270" y="170" width="100" height="50" class="seat available" data-id="13" />
-        <rect x="380" y="170" width="100" height="50" class="seat available" data-id="14" />
-        <rect x="490" y="170" width="100" height="50" class="seat occupied" data-id="15" />
+          <div class="form-group col-md-4">
+            <label for="fullDayPrice">Full Day Price:</label>
+            <input type="number" class="form-control" id="fullDayPrice" placeholder="Enter Full Day Price" />
+          </div>
+          <div class="form-group col-md-4">
+            <label for="halfDayPrice">Half Day Price:</label>
+            <input type="number" class="form-control" id="halfDayPrice" placeholder="Enter Half Day Price" />
+          </div>
+          <div class="form-group col-md-4 align-self-end">
+            <button type="button" class="btn btn-primary" id="updatePriceButton">Update</button>
+          </div>
+        </div>
 
-        <rect x="50" y="230" width="100" height="50" class="seat available" data-id="16" />
-        <rect x="160" y="230" width="100" height="50" class="seat occupied" data-id="17" />
-        <rect x="270" y="230" width="100" height="50" class="seat available" data-id="18" />
-        <rect x="380" y="230" width="100" height="50" class="seat available" data-id="19" />
-        <rect x="490" y="230" width="100" height="50" class="seat occupied" data-id="20" />
+        <div id="maps">
+          <svg class="map" id="platformMap" viewBox="0 0 600 300">
+            <rect x="65" y="50" width="70" height="35" parkid="1" class="park" />
+            <text x="82" y="72" class="price" parkid="1">$0</text>
 
-        <rect x="50" y="290" width="100" height="50" class="seat available" data-id="21" />
-        <rect x="160" y="290" width="100" height="50" class="seat occupied" data-id="22" />
-        <rect x="270" y="290" width="100" height="50" class="seat available" data-id="23" />
-        <rect x="380" y="290" width="100" height="50" class="seat available" data-id="24" />
-        <rect x="490" y="290" width="100" height="50" class="seat occupied" data-id="25" />
+            <rect x="150" y="50" width="70" height="35" parkid="2" class="park" />
+            <text x="167" y="72" class="price" parkid="2">$0</text>
 
-        <rect x="50" y="350" width="100" height="50" class="seat available" data-id="26" />
-        <rect x="160" y="350" width="100" height="50" class="seat occupied" data-id="27" />
-        <rect x="270" y="350" width="100" height="50" class="seat available" data-id="28" />
-        <rect x="380" y="350" width="100" height="50" class="seat available" data-id="29" />
-        <rect x="490" y="350" width="100" height="50" class="seat occupied" data-id="30" />
-      </svg>
+            <rect x="275" y="50" width="70" height="35" parkid="3" class="park" />
+            <text x="292" y="72" class="price" parkid="3">$0</text>
 
-      <h2>Manage Parking Bays</h2>
-      <div class="form-group mt-4">
-        <label for="parkingBayId">Select Parking Bay to Update:</label>
-        <select class="form-control" id="parkingBayId">
-          <option value="1">Parking Bay 1</option>
-          <option value="2">Parking Bay 2</option>
-          <option value="3">Parking Bay 3</option>
-          <option value="4">Parking Bay 4</option>
-          <option value="5">Parking Bay 5</option>
-          <option value="6">Parking Bay 6</option>
-          <option value="7">Parking Bay 7</option>
-          <option value="8">Parking Bay 8</option>
-          <option value="9">Parking Bay 9</option>
-          <option value="10">Parking Bay 10</option>
-          <option value="11">Parking Bay 11</option>
-          <option value="12">Parking Bay 12</option>
-          <option value="13">Parking Bay 13</option>
-          <option value="14">Parking Bay 14</option>
-          <option value="15">Parking Bay 15</option>
-          <option value="16">Parking Bay 16</option>
-          <option value="17">Parking Bay 17</option>
-          <option value="18">Parking Bay 18</option>
-          <option value="19">Parking Bay 19</option>
-          <option value="20">Parking Bay 20</option>
-          <option value="21">Parking Bay 21</option>
-          <option value="22">Parking Bay 22</option>
-          <option value="23">Parking Bay 23</option>
-          <option value="24">Parking Bay 24</option>
-          <option value="25">Parking Bay 25</option>
-          <option value="26">Parking Bay 26</option>
-          <option value="27">Parking Bay 27</option>
-          <option value="28">Parking Bay 28</option>
-          <option value="29">Parking Bay 29</option>
-          <option value="30">Parking Bay 30</option>
-        </select>
-      </div>
+            <rect x="360" y="50" width="70" height="35" parkid="4" class="park" />
+            <text x="377" y="72" class="price" parkid="4">$0</text>
 
-      <div class="form-group">
-        <label for="bayStatus">Set Status:</label>
-        <select class="form-control" id="bayStatus">
-          <option value="available">Available</option>
-          <option value="occupied">Occupied</option>
-        </select>
-      </div>
+            <rect x="480" y="50" width="70" height="35" parkid="5" class="park" />
+            <text x="497" y="72" class="price" parkid="5">$0</text>
 
-      <button class="btn btn-primary" id="updateBayStatus">Update Status</button>
+            <rect x="65" y="100" width="70" height="35" parkid="6" class="park" />
+            <text x="82" y="122" class="price" parkid="6">$0</text>
 
-      <div class="mt-3" id="statusMessage"></div>
+            <rect x="150" y="100" width="70" height="35" parkid="7" class="park" />
+            <text x="167" y="122" class="price" parkid="7">$0</text>
 
-      <h2 class="mt-4">Available Parking Bays: <span id="availableCount">0</span></h2>
+            <rect x="275" y="100" width="70" height="35" parkid="8" class="park" />
+            <text x="292" y="122" class="price" parkid="8">$0</text>
+
+            <rect x="360" y="100" width="70" height="35" parkid="9" class="park" />
+            <text x="377" y="122" class="price" parkid="9">$0</text>
+
+            <rect x="480" y="100" width="70" height="35" parkid="10" class="park" />
+            <text x="497" y="122" class="price" parkid="10">$0</text>
+
+            <rect x="65" y="185" width="70" height="35" parkid="11" class="park" />
+            <text x="82" y="207" class="price" parkid="11">$0</text>
+
+            <rect x="150" y="185" width="70" height="35" parkid="12" class="park" />
+            <text x="167" y="207" class="price" parkid="12">$0</text>
+
+            <rect x="275" y="185" width="70" height="35" parkid="13" class="park" />
+            <text x="292" y="207" class="price" parkid="13">$0</text>
+
+            <rect x="360" y="185" width="70" height="35" parkid="14" class="park" />
+            <text x="377" y="207" class="price" parkid="14">$0</text>
+
+            <rect x="480" y="185" width="70" height="35" parkid="15" class="park" />
+            <text x="497" y="207" class="price" parkid="15">$0</text>
+
+            <rect x="65" y="235" width="70" height="35" parkid="16" class="park" />
+            <text x="82" y="257" class="price" parkid="16">$0</text>
+
+            <rect x="150" y="235" width="70" height="35" parkid="17" class="park" />
+            <text x="167" y="257" class="price" parkid="17">$0</text>
+
+            <rect x="275" y="235" width="70" height="35" parkid="18" class="park" />
+            <text x="292" y="257" class="price" parkid="18">$0</text>
+
+            <rect x="360" y="235" width="70" height="35" parkid="19" class="park" />
+            <text x="377" y="257" class="price" parkid="19">$0</text>
+
+            <rect x="480" y="235" width="70" height="35" parkid="20" class="park" />
+            <text x="497" y="257" class="price" parkid="20">$0</text>
+          </svg>
+
+          <h2>Ground Floor</h2>
+          <svg class="map" id="GMap" viewBox="0 0 600 300">
+            <rect x="125" y="50" width="70" height="35" parkid="21" class="park" />
+            <text x="142" y="72" class="price" parkid="21">$0</text>
+
+            <rect x="205" y="50" width="70" height="35" parkid="22" class="park" />
+            <text x="222" y="72" class="price" parkid="22">$0</text>
+
+            <rect x="325" y="50" width="70" height="35" parkid="23" class="park" />
+            <text x="342" y="72" class="price" parkid="23">$0</text>
+
+            <rect x="405" y="50" width="70" height="35" parkid="24" class="park" />
+            <text x="422" y="72" class="price" parkid="24">$0</text>
+
+            <rect x="125" y="100" width="70" height="35" parkid="25" class="park" />
+            <text x="142" y="122" class="price" parkid="25">$0</text>
+
+            <rect x="205" y="100" width="70" height="35" parkid="26" class="park" />
+            <text x="222" y="122" class="price" parkid="26">$0</text>
+
+            <rect x="325" y="100" width="70" height="35" parkid="27" class="park" />
+            <text x="342" y="122" class="price" parkid="27">$0</text>
+
+            <rect x="405" y="100" width="70" height="35" parkid="28" class="park" />
+            <text x="422" y="122" class="price" parkid="28">$0</text>
+
+            <rect x="125" y="150" width="70" height="35" parkid="29" class="park" />
+            <text x="142" y="172" class="price" parkid="29">$0</text>
+
+            <rect x="205" y="150" width="70" height="35" parkid="30" class="park" />
+            <text x="222" y="172" class="price" parkid="30">$0</text>
+
+            <rect x="325" y="150" width="70" height="35" parkid="31" class="park" />
+            <text x="342" y="172" class="price" parkid="31">$0</text>
+
+            <rect x="405" y="150" width="70" height="35" parkid="32" class="park" />
+            <text x="422" y="172" class="price" parkid="32">$0</text>
+
+            <rect x="125" y="200" width="70" height="35" parkid="33" class="park" />
+            <text x="142" y="222" class="price" parkid="33">$0</text>
+
+            <rect x="205" y="200" width="70" height="35" parkid="34" class="park" />
+            <text x="222" y="222" class="price" parkid="34">$0</text>
+
+            <rect x="325" y="200" width="70" height="35" parkid="35" class="park" />
+            <text x="342" y="222" class="price" parkid="35">$0</text>
+
+            <rect x="405" y="200" width="70" height="35" parkid="36" class="park" />
+            <text x="422" y="222" class="price" parkid="36">$0</text>
+          </svg>
+
+          <h2>Basement 1</h2>
+          <svg class="map" id="-1Map" viewBox="0 0 600 300">
+            <rect x="170" y="50" width="35" height="70" parkid="37" class="park" />
+            <text x="175" y="90" class="price" parkid="37">$0</text>
+
+            <rect x="215" y="50" width="35" height="70" parkid="38" class="park" />
+            <text x="220" y="90" class="price" parkid="38">$0</text>
+
+            <rect x="260" y="50" width="35" height="70" parkid="39" class="park" />
+            <text x="265" y="90" class="price" parkid="39">$0</text>
+
+            <rect x="305" y="50" width="35" height="70" parkid="40" class="park" />
+            <text x="310" y="90" class="price" parkid="40">$0</text>
+
+            <rect x="350" y="50" width="35" height="70" parkid="41" class="park" />
+            <text x="355" y="90" class="price" parkid="41">$0</text>
+
+            <rect x="395" y="50" width="35" height="70" parkid="42" class="park" />
+            <text x="400" y="90" class="price" parkid="42">$0</text>
+
+            <rect x="170" y="170" width="35" height="70" parkid="43" class="park" />
+            <text x="175" y="210" class="price" parkid="43">$0</text>
+
+            <rect x="215" y="170" width="35" height="70" parkid="44" class="park" />
+            <text x="220" y="210" class="price" parkid="44">$0</text>
+
+            <rect x="260" y="170" width="35" height="70" parkid="45" class="park" />
+            <text x="265" y="210" class="price" parkid="45">$0</text>
+
+            <rect x="305" y="170" width="35" height="70" parkid="46" class="park" />
+            <text x="310" y="210" class="price" parkid="46">$0</text>
+
+            <rect x="350" y="170" width="35" height="70" parkid="47" class="park" />
+            <text x="355" y="210" class="price" parkid="47">$0</text>
+
+            <rect x="395" y="170" width="35" height="70" parkid="48" class="park" />
+            <text x="400" y="210" class="price" parkid="48">$0</text>
+          </svg>
+        </div>
+      </form>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      // Function to update parking bay status
-      document.getElementById('updateBayStatus').addEventListener('click', function () {
-        const selectedBayId = document.getElementById('parkingBayId').value;
-        const selectedStatus = document.getElementById('bayStatus').value;
-
-        // Update SVG based on selected parking bay and status
-        const bay = document.querySelector(`.seat[data-id="${selectedBayId}"]`);
-        if (bay) {
-          if (selectedStatus === 'available') {
-            bay.classList.remove('occupied');
-            bay.classList.add('available');
-          } else {
-            bay.classList.remove('available');
-            bay.classList.add('occupied');
-          }
-          document.getElementById('statusMessage').textContent =
-            `Parking Bay ${selectedBayId} status updated to ${selectedStatus}.`;
-          updateAvailableCount();
-        } else {
-          document.getElementById('statusMessage').textContent = 'Error: Parking Bay not found.';
-        }
-      });
-
-      // Function to count available parking bays
-      function updateAvailableCount() {
-        const availableBays = document.querySelectorAll('.seat.available');
-        document.getElementById('availableCount').textContent = availableBays.length;
-      }
-
-      // Initial count of available bays
-      updateAvailableCount();
-    </script>
   </body>
 </html>
