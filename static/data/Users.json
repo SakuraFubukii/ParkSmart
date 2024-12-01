@@ -2,8 +2,10 @@
   {
     "userid": "zhangsan",
     "username": "张三",
-    "phone": "+86 18888888888",
     "email": "zhangsan@gmail.com",
-    "password_hash": "hashed_password_here"
+    "gender": "male",
+    "password": "123456",
+    "birthdate": "1990-05-15",
+    "phone": "+86 18888888888"
   }
 ]
