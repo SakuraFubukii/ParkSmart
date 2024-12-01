@@ -1,3 +1,4 @@
+// Function to retrieve query parameters from the URL
 function getQueryParams() {
   const params = {};
   const queryString = window.location.search.substring(1);
@@ -12,8 +13,12 @@ function getQueryParams() {
 // Get the parameters and display them
 const queryParams = getQueryParams();
 document.getElementById('selectedDate').textContent = queryParams.date || 'N/A';
-document.getElementById('selectedParkId').textContent = queryParams.parkId || 'N/A';
 document.getElementById('durationDisplay').textContent = queryParams.duration === 'full' ? 'Full Day' : 'Half Day';
+
+// Display selected park IDs
+const parkIds = JSON.parse(queryParams.parkIds || '[]'); // Parse parkIds as an array
+const selectedParkIdDisplay = document.getElementById('selectedParkIds');
+selectedParkIdDisplay.textContent = parkIds.length > 0 ? parkIds.join(', ') : 'N/A';
 
 // Handle payment method selection
 document.getElementById('paymentMethod').addEventListener('change', function () {
@@ -29,18 +34,15 @@ document.getElementById('paymentMethod').addEventListener('change', function () 
 // Handle form submission for credit card
 document.getElementById('paymentForm')?.addEventListener('submit', (event) => {
   event.preventDefault();
-  // Here you can handle credit card payment processing
-  alert('Payment processed for booking on ' + queryParams.date + ' for parking spot ID ' + queryParams.parkId);
+  alert('Payment processed for booking on ' + queryParams.date + ' for parking spots: ' + parkIds.join(', '));
 });
 
 // Handle button click for Alipay
 document.getElementById('alipayDone')?.addEventListener('click', () => {
-  alert('Alipay payment confirmed for booking on ' + queryParams.date + ' for parking spot ID ' + queryParams.parkId);
-  // 这里可以添加进一步的处理逻辑，例如更新数据库状态
+  alert('Alipay payment confirmed for booking on ' + queryParams.date + ' for parking spots: ' + parkIds.join(', '));
 });
 
 // Handle button click for WeChat
 document.getElementById('wechatDone')?.addEventListener('click', () => {
-  alert('WeChat payment confirmed for booking on ' + queryParams.date + ' for parking spot ID ' + queryParams.parkId);
-  // 这里可以添加进一步的处理逻辑，例如更新数据库状态
+  alert('WeChat payment confirmed for booking on ' + queryParams.date + ' for parking spots: ' + parkIds.join(', '));
 });

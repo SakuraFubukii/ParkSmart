@@ -1,0 +1,34 @@
+[
+  {
+    "id": "promo_1",
+    "name": "January Sale",
+    "start_date": "2025-01-06",
+    "end_date": "2024-01-31",
+    "discount": 0.9,
+    "description": "January Sale - 10% off 2025-01-06 to 2024-01-31"
+  },
+  {
+    "id": "promo_2",
+    "name": "Christmas Sale",
+    "start_date": "2024-12-23",
+    "end_date": "2024-12-25",
+    "discount": 0,
+    "description": "Christmas Sale - Free 2024-12-23 to 2024-12-25"
+  },
+  {
+    "id": "promo_3",
+    "name": "New Year Discount",
+    "start_date": "2024-12-26",
+    "end_date": "2025-01-05",
+    "discount": 0.5,
+    "description": "New Year Discount - 50% off 2024-12-26 to 2025-01-05"
+  },
+  {
+    "id": "promo_4",
+    "name": "test1",
+    "start_date": "2025-02-09",
+    "end_date": "2025-02-28",
+    "discount": 0.4,
+    "description": "6666"
+  }
+]

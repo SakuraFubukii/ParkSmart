@@ -33,10 +33,8 @@ router.post('/', async (req, res) => {
         parkingSpot.fullday_price = newFullDayPrice;
       }
 
-      // Write the updated parking spaces back to the file
       await fs.writeFile(filePath1, JSON.stringify(jsonData, null, 2));
     } else {
-      // Return error if the parking spot is not found
       return res.status(404).json({ message: 'Parking spot not found' });
     }
 
@@ -61,7 +59,7 @@ router.post('/', async (req, res) => {
 
       // Write the updated reservations back to the file
       await fs.writeFile(filePath2, JSON.stringify(reservations, null, 2));
-      return res.status(200).json({ message: 'Update Success and Reservation Added' });
+      return res.status(200).json({ message: 'Update Success' });
     } else if (op_status === 0) {
       // When op_status is 0, delete the corresponding reservation record
       const reservationDataFile = await fs.readFile(filePath2, 'utf8');
@@ -73,7 +71,7 @@ router.post('/', async (req, res) => {
 
         // Write the updated reservations back to the file
         await fs.writeFile(filePath2, JSON.stringify(reservations, null, 2));
-        return res.status(200).json({ message: 'Reservation deleted successfully' });
+        return res.status(200).json({ message: 'Update Success' });
       } else {
         // Return error if no reservations are found
         return res.status(404).json({ message: 'No reservations found' });

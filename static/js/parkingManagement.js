@@ -27,7 +27,6 @@ async function fetchReservationData() {
 async function updateParkingStatus(parkingData) {
   const reservations = await fetchReservationData();
   const dateInput = document.getElementById('date').value;
-  const halfDayOption = document.getElementById('halfDay');
   const fullDayOption = document.getElementById('fullDay');
   const infoDisplay = document.getElementById('infoDisplay');
 
@@ -81,6 +80,13 @@ async function updateParkingStatus(parkingData) {
               `;
             }
           }
+          return;
+        }
+
+        // Check if the status is "occupied" and date is not selected
+        const parkingStatusSelect = document.getElementById('parkingStatus');
+        if (parkingStatusSelect.value === 'occupied' && !dateInput) {
+          alert('Please select a date before choosing occupied status.');
           return;
         }
 
