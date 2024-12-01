@@ -1,11 +1,24 @@
 [
   {
-    "userid": "zhangsan",
-    "username": "张三",
-    "email": "zhangsan@gmail.com",
+    "user_id": "user1",
+    "nickname": "zhangsan",
+    "email": "user1@example.com",
     "gender": "male",
-    "password": "123456",
+    "password": "12345678",
     "birthdate": "1990-05-15",
-    "phone": "+86 18888888888"
+    "role": "user",
+    "enabled": true,
+    "profile-image": "assets/profile_image1.jpg"
+  },
+  {
+    "user_id": "admin",
+    "nickname": "admin",
+    "email": "admin@example.com",
+    "gender": "male",
+    "password": "adminpass",
+    "birthdate": "2003-05-15",
+    "role": "admin",
+    "enabled": true,
+    "profile-image": "assets/profile_image1.jpg"
   }
 ]
