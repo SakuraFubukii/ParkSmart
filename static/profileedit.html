@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="styles/user.css" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+    <title>Edit Profile</title>
+    <script src="js/user.js" defer></script>
+  </head>
+
+  <header class="text-white">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container-fluid">
+        <a href="index.html">
+          <img src="assets/logo.jpg" alt="Company Logo" class="header-logo" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <div class="profile-container">
+                <img class="profile-picture" src="assets/Unknown.png" alt="User Profile Picture" />
+                <a class="nav-link" href="user.html">Profile</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <body class="d-flex flex-column min-vh-100">
+    <main class="px-3">
+      <h1 class="text-center py-3 bg-secondary text-white">Profile Editing</h1>
+      <div class="edit-container d-flex justify-content-center">
+        <div class="card p-4 shadow-lg edit-card">
+          <form action="/auth/profileedit" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+              <label for="nickname" class="form-label">Nickname</label>
+              <input
+                type="text"
+                class="form-control"
+                id="nickname"
+                name="nickname"
+                placeholder="leave it blank for no changes" />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="leave it blank for no changes" />
+            </div>
+            <div class="mb-3">
+              <label for="currentPassword" class="form-label">Current Password</label>
+              <input type="password" class="form-control" id="currentPassword" name="currentPassword" />
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                placeholder="leave it blank for no changes" />
+            </div>
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirm Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="leave it blank for no changes" />
+            </div>
+            <div class="mb-3">
+              <label for="file">Upload your profile picture</label>
+              <br />
+              <input type="file" id="profilepic" name="profilepic" />
+            </div>
+            <div>
+              <button type="submit" class="btn btn-primary w-100">Update</button>
+              <a href="user.html" class="btn btn-secondary btn-custom mt-2 w-100">Back</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <p class="text-center pt-3 pb-2 m-0">&copy; POLYU-PARK</p>
+      <p class="text-center pb-3 m-0"><span id="time"></span></p>
+    </footer>
+    <script class="bg-black text-white text-center py-3 m-0">
+      function updateTime() {
+        document.getElementById('time').textContent = new Date().toLocaleString('en-HK', {
+          timeZone: 'Asia/Hong_Kong',
+        });
+      }
+      setInterval(updateTime, 1000);
+      updateTime();
+    </script>
+    <script src="js/profileedit.js"></script>
+  </body>
+</html>
