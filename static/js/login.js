@@ -21,9 +21,9 @@ document.getElementById('loginBtn').addEventListener('click', async () => {
 
     if (response.ok && result.status === 'success') {
       if (result.user.role === 'admin') {
-        window.open('/admin.html', '_self');
+        window.open('/parkingManagement.html', '_self');
       } else {
-        window.open('/home.html', '_self');
+        window.open('/index.html', '_self');
       }
     } else if (result.message) {
       alert(result.message);
