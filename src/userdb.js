@@ -165,11 +165,4 @@ async function modify_user(currentUsername, updates) {
   }
 }
 
-// modify_user('root', {
-//   username: 'newUsername',
-//   email: 'newemail@example.com',
-// });
-
-//update_user('23019876D', '23019876D', 'root@gmail.com').then((res) => console.log(res));
-
 export { validate_user, create_user, fetch_user, username_exist, modify_user, fetch_all_users };
