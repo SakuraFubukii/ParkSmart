@@ -1,0 +1,24 @@
+[
+  {
+    "userid": "user1",
+    "nickname": "User123",
+    "email": "user1@example.com",
+    "gender": "male",
+    "password": "12345678",
+    "birthdate": "1990-05-15",
+    "role": "user",
+    "enabled": true,
+    "profile-image": "assets/profile_image1.jpg"
+  },
+  {
+    "userid": "admin",
+    "nickname": "admin",
+    "email": "admin@example.com",
+    "gender": "male",
+    "password": "adminpass",
+    "birthdate": "2003-05-15",
+    "role": "admin",
+    "enabled": true,
+    "profile-image": "assets/profile_image1.jpg"
+  }
+]
