@@ -109,16 +109,16 @@ function updatePrices(parkingData) {
 
   if (parkingInfo) {
     const price = parkingInfo[selectedPriceType];
-    selectedParkingSpot.setAttribute('title', `Price: ${price}元`);
+    selectedParkingSpot.setAttribute('title', `Price: ${price}HKD`);
     const priceText = selectedParkingSpot.querySelector('.price');
     if (priceText) {
-      priceText.textContent = `${price}元`;
+      priceText.textContent = `${price}HKD`;
     } else {
       const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
       textElement.setAttribute('x', parseFloat(selectedParkingSpot.getAttribute('x')) + 5);
       textElement.setAttribute('y', parseFloat(selectedParkingSpot.getAttribute('y')) + 25);
       textElement.setAttribute('class', 'price');
-      textElement.textContent = `${price}元`;
+      textElement.textContent = `${price}HKD`;
       selectedParkingSpot.appendChild(textElement);
     }
   }

@@ -3,8 +3,30 @@
     "_id": "res_1",
     "user_id": "zhangsan",
     "parkId": "1",
-    "date": "2024-11-30",
+    "date": "2024-12-03",
     "duration": "half",
-    "payment_status": "completed"
+    "booktime": "2024-11-30T18:00:00Z",
+    "payment_status": "completed",
+    "comment": ""
+  },
+  {
+    "user_id": "admin",
+    "parkId": "5",
+    "date": "2024-12-03",
+    "duration": "half",
+    "booktime": "2024-12-01T13:26:26.866Z",
+    "payment_status": "none",
+    "comment": "Blocked by admin",
+    "_id": "res_4"
+  },
+  {
+    "user_id": "admin",
+    "parkId": "19",
+    "date": "2024-12-03",
+    "duration": "half",
+    "booktime": "2024-12-01T13:54:31.902Z",
+    "payment_status": "none",
+    "comment": "Blocked by admin",
+    "_id": "res_5"
   }
 ]

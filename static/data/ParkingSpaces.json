@@ -1,50 +1,242 @@
 [
-  { "parkid": 1, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 2, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 3, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 4, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 5, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 6, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 7, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 8, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 9, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 10, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 11, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 12, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 13, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 14, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 15, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 16, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 17, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 18, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 19, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 20, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 21, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 22, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 23, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 24, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 25, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 26, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 27, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 28, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 29, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 30, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 31, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 32, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 33, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 34, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 35, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 36, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 37, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 38, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 39, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 40, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 41, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 42, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 43, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 44, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 45, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 46, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 47, "halfday_price": 80, "fullday_price": 100 },
-  { "parkid": 48, "halfday_price": 80, "fullday_price": 100 }
+  {
+    "parkid": 1,
+    "halfday_price": "90",
+    "fullday_price": "50"
+  },
+  {
+    "parkid": 2,
+    "halfday_price": "50",
+    "fullday_price": "70"
+  },
+  {
+    "parkid": 3,
+    "halfday_price": "70",
+    "fullday_price": "50"
+  },
+  {
+    "parkid": 4,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 5,
+    "halfday_price": "90",
+    "fullday_price": "80"
+  },
+  {
+    "parkid": 6,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 7,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 8,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 9,
+    "halfday_price": "30",
+    "fullday_price": "60"
+  },
+  {
+    "parkid": 10,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 11,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 12,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 13,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 14,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 15,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 16,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 17,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 18,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 19,
+    "halfday_price": "90",
+    "fullday_price": "7"
+  },
+  {
+    "parkid": 20,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 21,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 22,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 23,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 24,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 25,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 26,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 27,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 28,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 29,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 30,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 31,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 32,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 33,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 34,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 35,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 36,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 37,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 38,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 39,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 40,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 41,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 42,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 43,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 44,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 45,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 46,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 47,
+    "halfday_price": 80,
+    "fullday_price": 100
+  },
+  {
+    "parkid": 48,
+    "halfday_price": 80,
+    "fullday_price": 100
+  }
 ]

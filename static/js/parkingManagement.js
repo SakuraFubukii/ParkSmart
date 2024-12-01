@@ -29,6 +29,7 @@ async function updateParkingStatus(parkingData) {
   const dateInput = document.getElementById('date').value;
   const halfDayOption = document.getElementById('halfDay');
   const fullDayOption = document.getElementById('fullDay');
+  const infoDisplay = document.getElementById('infoDisplay');
 
   parkingData.forEach((parkingSpot) => {
     const rect = document.querySelector(`rect[parkid="${parkingSpot.parkid}"]`);
@@ -37,8 +38,8 @@ async function updateParkingStatus(parkingData) {
       rect.classList.remove('available', 'occupied', 'selected');
 
       const isOccupied = reservations.some((reservation) => {
-        const parkIdMatch = String(reservation.parkId) === String(parkingSpot.parkid);
-        const dateMatch = String(reservation.date) === dateInput;
+        const parkIdMatch = String(reservation.parkId) == String(parkingSpot.parkid);
+        const dateMatch = String(reservation.date) == dateInput;
         return parkIdMatch && dateMatch;
       });
 
@@ -57,6 +58,29 @@ async function updateParkingStatus(parkingData) {
       // Add click event listener for selecting parking spots
       rect.addEventListener('click', () => {
         if (isOccupied) {
+          const reservation = reservations.find((res) => res.parkId == parkingSpot.parkid && res.date == dateInput);
+          if (reservation) {
+            // Check if the user is an admin or a regular user
+            if (reservation.user_id === 'admin') {
+              infoDisplay.innerHTML = `
+                  <strong>Occupied:</strong><br>
+                  Status: Administrator has locked this parking spot.<br>
+                  Date: ${reservation.date}<br>
+                  Duration: ${reservation.duration}<br>
+                  Book Time: ${new Date(reservation.booktime).toLocaleString()}<br>
+                  Comment: ${reservation.comment || 'None'}
+                `;
+            } else {
+              infoDisplay.innerHTML = `
+                <strong>Occupied:</strong><br>
+                User: ${reservation.user_id}<br>
+                Date: ${reservation.date}<br>
+                Duration: ${reservation.duration}<br>
+                Book Time: ${new Date(reservation.booktime).toLocaleString()}<br>
+                Comment: ${reservation.comment || 'None'}
+              `;
+            }
+          }
           return;
         }
 
@@ -67,19 +91,26 @@ async function updateParkingStatus(parkingData) {
 
         // Select the clicked space if available
         rect.classList.add('selected');
+
+        // If selected space is available, show "Available"
+        infoDisplay.innerHTML = '<strong>Available</strong>';
       });
     }
   });
+
+  if (!document.querySelector('.park.selected')) {
+    infoDisplay.innerHTML = '<strong>Please select a parking spot</strong>'; // Display message if nothing is selected
+  }
 }
 
-async function updateParkingPrice(parkId, newHalfDayPrice, newFullDayPrice) {
+async function updateParkingPrice(parkId, newHalfDayPrice, newFullDayPrice, reservationData, op_status) {
   try {
-    const response = await fetch('/data/ParkingSpaces.json', {
+    const response = await fetch('/manage', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ parkId, newHalfDayPrice, newFullDayPrice }),
+      body: JSON.stringify({ parkId, newHalfDayPrice, newFullDayPrice, reservationData, op_status }),
     });
 
     console.log(response);
@@ -90,6 +121,9 @@ async function updateParkingPrice(parkId, newHalfDayPrice, newFullDayPrice) {
 
     const result = await response.json();
     console.log(result.message);
+
+    alert(result.message);
+    location.reload();
   } catch (error) {
     console.error('Error updating parking price:', error);
   }
@@ -98,12 +132,37 @@ async function updateParkingPrice(parkId, newHalfDayPrice, newFullDayPrice) {
 document.getElementById('updatePriceButton').addEventListener('click', async () => {
   const selectedRect = document.querySelector('.park.selected');
   const parkId = selectedRect ? selectedRect.getAttribute('parkid') : null;
+  const parkingStatusSelect = document.getElementById('parkingStatus');
+  const selectedStatus = parkingStatusSelect.value;
 
   const fullDayPrice = document.getElementById('fullDayPrice').value;
   const halfDayPrice = document.getElementById('halfDayPrice').value;
 
   if (parkId && (fullDayPrice || halfDayPrice)) {
-    await updateParkingPrice(parkId, halfDayPrice || undefined, fullDayPrice || undefined);
+    if (selectedStatus) {
+      let op_status = 0;
+      if (selectedStatus == 'occupied') {
+        op_status = 1;
+      }
+      const reservationData = {
+        user_id: 'admin',
+        parkId: parkId,
+        date: document.getElementById('date').value,
+        duration: document.querySelector('input[name="duration"]:checked').value,
+        booktime: new Date().toISOString(),
+        payment_status: 'none',
+        comment: 'Blocked by admin',
+      };
+      await updateParkingPrice(
+        parkId,
+        halfDayPrice || undefined,
+        fullDayPrice || undefined,
+        reservationData,
+        op_status
+      );
+    } else {
+      alert('Please select a parking status.');
+    }
   } else {
     alert('Please select a parking spot and enter at least one price.');
   }
