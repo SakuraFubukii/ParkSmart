@@ -35,5 +35,4 @@ function displayReservations(reservations) {
   });
 }
 
-// 页面加载时获取预订记录
 window.onload = fetchReservations;
