@@ -82,12 +82,12 @@ async function submitReservation(data) {
     console.log('Current reservations:', reservations); // Log current reservations
 
     // Determine the next reservation ID
-    const lastId = reservations.length > 0 ? reservations[reservations.length - 1]._id : null;
+    const lastId = reservations.length > 0 ? reservations[reservations.length - 1].id : null;
     const newId = lastId ? `res_${parseInt(lastId.split('_')[1]) + 1}` : 'res_1'; // Increment the ID
     console.log('New reservation ID:', newId); // Log the new ID
 
     // Add the new ID to the payment data
-    data._id = newId;
+    data.id = newId;
 
     // Send the new reservation data
     const postResponse = await fetch('/book/data/Reservations.json', {

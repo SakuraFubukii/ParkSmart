@@ -21,8 +21,8 @@
   },
   {
     "parkid": 5,
-    "halfday_price": "90",
-    "fullday_price": "80"
+    "halfday_price": "30",
+    "fullday_price": "90"
   },
   {
     "parkid": 6,

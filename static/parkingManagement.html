@@ -4,8 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Booking - Parking Space</title>
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+      }
+      nav {
+        margin-bottom: 20px;
+      }
       .hidden {
         display: none;
       }
@@ -27,12 +37,39 @@
       .price {
         font-size: 11px;
         font-weight: bold;
+        fill: #333;
       }
       #infoDisplay {
-        margin-top: 10px;
-        padding: 10px;
+        margin-top: 15px;
+        padding: 15px;
         border: 1px solid #ccc;
-        background-color: #f9f9f9;
+        background-color: #ffffff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .map-container {
+        margin-top: 30px;
+        text-align: center;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+      }
+      .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+      }
+      footer {
+        text-align: center;
+        margin-top: 40px;
+        padding: 10px;
+        background-color: #343a40;
+        color: white;
+      }
+      .form-check-label {
+        font-size: 14px;
       }
     </style>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -40,57 +77,73 @@
     <script src="js/parkingManagement.js" defer></script>
   </head>
   <body>
+    <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="index.html">Home</a>
       <a class="navbar-brand" href="event.html">Event Manage</a>
-      <div class="collapse navbar-collapse">
-        <a class="btn btn-outline-light ml-auto" href="logout.html" id="logout">Logout</a>
-      </div>
     </nav>
 
-    <div class="container mt-4">
+    <!-- Booking Form Container -->
+    <div class="container">
       <form id="bookingForm">
-        <div class="form-row">
-          <div class="form-group col-md-4">
-            <label for="date">Select Date:</label>
-            <input type="date" class="form-control" id="date" />
+        <div class="row">
+          <!-- Date Selection -->
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="date">Select Date:</label>
+              <input type="date" class="form-control" id="date" />
+            </div>
           </div>
 
-          <div class="form-group col-md-4">
-            <label>Select Duration:</label>
-            <div class="form-check">
-              <input type="radio" id="halfDay" name="duration" value="half" class="form-check-input" checked />
-              <label for="halfDay" class="form-check-label">Half Day (8 AM to 8 PM)</label>
-            </div>
-            <div class="form-check">
-              <input type="radio" id="fullDay" name="duration" value="full" class="form-check-input" />
-              <label for="fullDay" class="form-check-label">Full Day</label>
+          <!-- Duration Selection -->
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>Select Duration:</label>
+              <div class="form-check">
+                <input type="radio" id="halfDay" name="duration" value="half" class="form-check-input" checked />
+                <label for="halfDay" class="form-check-label">Half Day (8 AM to 8 PM)</label>
+              </div>
+              <div class="form-check">
+                <input type="radio" id="fullDay" name="duration" value="full" class="form-check-input" />
+                <label for="fullDay" class="form-check-label">Full Day</label>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group col-md-4">
-            <label for="parkingStatus">Update Parking Status:</label>
-            <select class="form-control" id="parkingStatus">
-              <option value="available">Available</option>
-              <option value="occupied">Occupied</option>
-            </select>
+        <div class="row">
+          <!-- Parking Status Update -->
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="parkingStatus">Update Parking Status:</label>
+              <select class="form-control" id="parkingStatus">
+                <option value="available">Available</option>
+                <option value="occupied">Occupied</option>
+              </select>
+            </div>
           </div>
 
-          <div class="form-group col-md-4">
-            <label for="fullDayPrice">Update Full Day Price:</label>
-            <input type="number" class="form-control" id="fullDayPrice" placeholder="Enter Full Day Price" />
+          <!-- Pricing for Half and Full Day -->
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="fullDayPrice">Full Day Price:</label>
+              <input type="number" class="form-control" id="fullDayPrice" placeholder="Enter Full Day Price" />
+            </div>
           </div>
-          <div class="form-group col-md-4">
-            <label for="halfDayPrice">Update Half Day Price:</label>
-            <input type="number" class="form-control" id="halfDayPrice" placeholder="Enter Half Day Price" />
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="halfDayPrice">Half Day Price:</label>
+              <input type="number" class="form-control" id="halfDayPrice" placeholder="Enter Half Day Price" />
+            </div>
           </div>
-          <div class="form-group col-md-4 align-self-end">
-            <button type="button" class="btn btn-primary" id="updatePriceButton">Update</button>
+
+          <div class="col-md-4 align-self-end">
+            <button type="button" class="btn btn-primary btn-block" id="updatePriceButton">Update</button>
           </div>
-          <div id="infoDisplay"></div>
         </div>
+
+        <!-- Info Display Area -->
+        <div id="infoDisplay"></div>
 
         <div id="maps">
           <h2>Platform</h2>
@@ -248,5 +301,9 @@
         </div>
       </form>
     </div>
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2024 PolyU Park. All rights reserved.</p>
+    </footer>
   </body>
 </html>

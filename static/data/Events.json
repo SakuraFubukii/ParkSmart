@@ -4,8 +4,8 @@
     "name": "January Sale",
     "start_date": "2025-01-06",
     "end_date": "2024-01-31",
-    "discount": 0.9,
-    "description": "January Sale - 10% off 2025-01-06 to 2024-01-31"
+    "discount": 0.8,
+    "description": "January Sale - 20% off 2025-01-06 to 2024-01-31"
   },
   {
     "id": "promo_2",

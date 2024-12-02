@@ -22,7 +22,7 @@ function displayReservations(reservations) {
   reservations.forEach((reservation) => {
     const row = document.createElement('tr');
     row.innerHTML = `
-            <td>${reservation._id}</td>
+            <td>${reservation.id}</td>
             <td>${reservation.user_id}</td>
             <td>${reservation.parkId}</td>
             <td>${reservation.date}</td>

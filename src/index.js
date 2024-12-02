@@ -5,6 +5,7 @@ import booking from './booking.js';
 import parkingManagement from './parkingManagement.js';
 import events from './event.js';
 import login from './login.js';
+import { init_db } from './userdb.js';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -14,6 +15,10 @@ const __dirname = dirname(__filename);
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+init_db().catch((err) => {
+  console.error('Failed to initialize database:', err);
+});
 
 app.use(
   session({

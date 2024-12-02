@@ -1,18 +1,25 @@
 let events = [];
 let currentEventId = null; // To keep track of the event being edited
 
+// Utility function to generate unique event IDs (UUID)
+function generateEventId() {
+  return 'promo_' + Date.now();
+}
+
+// Fetch all events
 async function fetchEvents() {
   try {
     const response = await fetch('/data/events.json');
     if (!response.ok) throw new Error('Network response was not ok');
     events = await response.json();
-    console.log('Fetching events:', events);
+    console.log('Fetched events:', events);
     displayEvents(events); // Display all events initially
   } catch (error) {
     console.error('Error fetching events:', error);
   }
 }
 
+// Save events to the server or local storage
 async function saveEvents() {
   try {
     const response = await fetch('/event/manage/', {
@@ -29,27 +36,29 @@ async function saveEvents() {
   }
 }
 
+// Display events in the table
 function displayEvents(eventsToDisplay) {
   const eventList = document.getElementById('eventList');
-  eventList.innerHTML = '';
+  eventList.innerHTML = ''; // Clear current list
 
   eventsToDisplay.forEach((event) => {
     const row = document.createElement('tr');
     row.innerHTML = `
-              <td>${event.name}</td>
-              <td>${new Date(event.start_date).toLocaleDateString()}</td>
-              <td>${new Date(event.end_date).toLocaleDateString()}</td>
-              <td>${event.discount}</td>
-              <td>${event.description}</td>
-              <td>
-                  <button class="btn btn-warning" onclick="editEvent('${event.id}')">Edit</button>
-                  <button class="btn btn-danger" onclick="deleteEvent('${event.id}')">Delete</button>
-              </td>
-          `;
+      <td>${event.name}</td>
+      <td>${new Date(event.start_date).toLocaleDateString()}</td>
+      <td>${new Date(event.end_date).toLocaleDateString()}</td>
+      <td>${event.discount}</td>
+      <td>${event.description}</td>
+      <td>
+          <button class="btn btn-warning btn-edit" onclick="editEvent('${event.id}')">Edit</button>
+          <button class="btn btn-danger btn-delete" onclick="deleteEvent('${event.id}')">Delete</button>
+      </td>
+    `;
     eventList.appendChild(row);
   });
 }
 
+// Delete event by ID
 async function deleteEvent(eventId) {
   const confirmed = window.confirm('Are you sure you want to delete this event?');
 
@@ -57,11 +66,10 @@ async function deleteEvent(eventId) {
     events = events.filter((event) => event.id !== eventId);
     await saveEvents();
     displayEvents(events); // Update the displayed events
-  } else {
-    console.log('Deletion canceled');
   }
 }
 
+// Edit event form population
 function editEvent(eventId) {
   const eventToEdit = events.find((event) => event.id === eventId);
   if (eventToEdit) {
@@ -80,6 +88,7 @@ function editEvent(eventId) {
   }
 }
 
+// Event listener for creating new events
 document.addEventListener('DOMContentLoaded', () => {
   // Create Event Form Submission
   document.getElementById('eventForm').addEventListener('submit', async function (event) {
@@ -99,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Create a new event
     const newEvent = {
-      id: `promo_${events.length + 1}`,
+      id: generateEventId(), // Generate a unique ID
       name,
       start_date: startDate,
       end_date: endDate,

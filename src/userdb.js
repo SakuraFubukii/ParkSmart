@@ -1,168 +1,112 @@
 import fs from 'fs/promises';
-import path from 'path';
+import chokidar from 'chokidar';
 import client from './dbclient.js';
 
-const currentTime = new Date().toLocaleString('en-HK', { timeZone: 'Asia/Hong_Kong' });
-console.log(`${currentTime}`);
-
-const users = client.db('football').collection('users');
-
-async function init_db() {
+export async function init_db() {
   try {
-    const count = await users.countDocuments();
-    if (count === 0) {
-      const data = await fs.readFile('user.json', 'utf-8');
-      const usersArray = JSON.parse(data);
-      for (let user of usersArray) {
-        if (user.imagePath) {
-          try {
-            const imageBuffer = await fs.readFile(path.resolve(user.imagePath));
-            user.image = imageBuffer;
-            delete user.imagePath;
-          } catch (err) {
-            console.error(`Failed to read image for user ${user.username}:`, err);
-          }
-        }
-      }
-      const result = await users.insertMany(usersArray);
-      console.log(`Added ${result.insertedCount} users`);
-    }
+    await client.connect();
+    const db = client.db('polyupark');
+
+    await initUsers(db);
+    await initReservations(db);
+    await initParkingSpaces(db);
+    await initEvents(db);
+    setupFileWatchers(db);
   } catch (err) {
     console.error('Unable to initialize the database!', err);
+  } finally {
+    // await client.close();
   }
 }
+
+async function initUsers(db) {
+  const users = db.collection('users');
+  const userCount = await users.countDocuments();
+  if (userCount === 0) {
+    const data = await fs.readFile('../Polyu-Park/static/data/Users.json', 'utf8');
+    const userProfiles = JSON.parse(data);
+    const result = await users.insertMany(userProfiles);
+    console.log(`Added ${result.insertedCount} users`);
+  } else {
+    console.log('Users collection already initialized');
+  }
+}
+
+async function initReservations(db) {
+  const reservations = db.collection('reservations');
+  const reservationCount = await reservations.countDocuments();
+  if (reservationCount === 0) {
+    const data = await fs.readFile('../Polyu-Park/static/data/Reservations.json', 'utf8');
+    const reservationData = JSON.parse(data);
+    const result = await reservations.insertMany(reservationData);
+    console.log(`Added ${result.insertedCount} reservations`);
+  } else {
+    console.log('Reservations collection already initialized');
+  }
+}
+
+async function initParkingSpaces(db) {
+  const parkingSpaces = db.collection('parkingspace');
+  const parkingCount = await parkingSpaces.countDocuments();
+  if (parkingCount === 0) {
+    const data = await fs.readFile('../Polyu-Park/static/data/ParkingSpaces.json', 'utf8');
+    const parkingData = JSON.parse(data);
+    const result = await parkingSpaces.insertMany(parkingData);
+    console.log(`Added ${result.insertedCount} parking spaces`);
+  } else {
+    console.log('Parking spaces collection already initialized');
+  }
+}
+
+async function initEvents(db) {
+  const events = db.collection('events');
+  const eventCount = await events.countDocuments();
+  if (eventCount === 0) {
+    const data = await fs.readFile('../Polyu-Park/static/data/Events.json', 'utf8');
+    const eventData = JSON.parse(data);
+    const result = await events.insertMany(eventData);
+    console.log(`Added ${result.insertedCount} events`);
+  } else {
+    console.log('Events collection already initialized');
+  }
+}
+
+function setupFileWatchers(db) {
+  const watcher = chokidar.watch('../Polyu-Park/static/data', { persistent: true });
+
+  watcher.on('change', async (path) => {
+    console.log(`File ${path} has been updated`);
+
+    if (path.includes('Users.json')) {
+      const data = await fs.readFile(path, 'utf8');
+      const userProfiles = JSON.parse(data);
+      const users = db.collection('users');
+      await users.deleteMany({});
+      const result = await users.insertMany(userProfiles);
+      console.log(`Updated ${result.insertedCount} users`);
+    } else if (path.includes('Reservations.json')) {
+      const data = await fs.readFile(path, 'utf8');
+      const reservationData = JSON.parse(data);
+      const reservations = db.collection('reservations');
+      await reservations.deleteMany({});
+      const result = await reservations.insertMany(reservationData);
+      console.log(`Updated ${result.insertedCount} reservations`);
+    } else if (path.includes('ParkingSpaces.json')) {
+      const data = await fs.readFile(path, 'utf8');
+      const parkingData = JSON.parse(data);
+      const parkingSpaces = db.collection('parkingspace');
+      await parkingSpaces.deleteMany({});
+      const result = await parkingSpaces.insertMany(parkingData);
+      console.log(`Updated ${result.insertedCount} parking spaces`);
+    } else if (path.includes('Events.json')) {
+      const data = await fs.readFile(path, 'utf8');
+      const eventData = JSON.parse(data);
+      const events = db.collection('events');
+      await events.deleteMany({});
+      const result = await events.insertMany(eventData);
+      console.log(`Updated ${result.insertedCount} events`);
+    }
+  });
+}
+
 init_db().catch(console.dir);
-
-async function validate_user(userid, password) {
-  if (!userid || !password) return false;
-  try {
-    const user = await users.findOne({ userid, password });
-    if (user) {
-      return user;
-    } else {
-      return false;
-    }
-  } catch (error) {
-    console.error('Unable to fetch from database!', error);
-    return false;
-  }
-}
-
-async function create_user(userid, nickname, password, email, gender, birthdate, profileimage) {
-  try {
-    const image = 'profile/profile_image1.jpg';
-    const enabled = true;
-
-    const result = await users.updateOne(
-      { userid },
-      {
-        $set: {
-          userid: userid,
-          nickname: nickname,
-          email: email,
-          password: password,
-          gender: gender,
-          birthdate: birthdate,
-          role: 'user',
-          enabled: true,
-          profileimage: profileimage || image,
-        },
-      },
-      { upsert: true }
-    );
-    if (result.upsertedCount > 0) {
-      console.log('Added 1 user');
-    } else {
-      console.log('Updated existing user');
-    }
-    return true;
-  } catch (error) {
-    console.error('Unable to update the database!', error);
-    return false;
-  }
-}
-
-async function fetch_user(userid) {
-  try {
-    const user = await users.findOne({ userid });
-    console.log('Fetched user:', user);
-    if (user) {
-      return user;
-    }
-    return null;
-  } catch (error) {
-    console.error('Unable to fetch from database!', error);
-    return false;
-  }
-}
-
-async function fetch_all_users() {
-  try {
-    const user = await users.find().toArray();
-    return user;
-  } catch (error) {
-    console.error('Error fetching all users:', error);
-    throw error;
-  }
-}
-
-async function username_exist(userid) {
-  try {
-    const user = await fetch_user(userid);
-    console.log(`Does username "${userid}" exist?`, user !== null);
-    if (user) return true;
-    else return false;
-  } catch (error) {
-    console.error('Unable to fetch from database!', error);
-    return false;
-  }
-}
-
-async function modify_user(currentUsername, updates) {
-  try {
-    const currentUser = await fetch_user(currentUsername);
-    if (!currentUser) {
-      console.error('User not found');
-      return false;
-    }
-    const newUpdates = {};
-    newUpdates.nickname = updates.nickname || currentUser.nickname;
-    newUpdates.email = updates.email || currentUser.email;
-    newUpdates.password = updates.password || currentUser.password;
-    newUpdates.profileimage = updates.profileimage || currentUser.profileimage;
-
-    if (
-      JSON.stringify(newUpdates) ===
-      JSON.stringify({
-        nickname: currentUser.nickname,
-        email: currentUser.email,
-        password: currentUser.password,
-        profileimage: currentUser.profileimage,
-      })
-    ) {
-      console.log('No updates to apply');
-      return true;
-    }
-
-    const result = await users.updateOne(
-      { userid: currentUsername },
-      {
-        $set: newUpdates,
-      },
-      { upsert: false }
-    );
-
-    if (result.modifiedCount > 0) {
-      console.log('Updated existing user');
-      return true;
-    } else {
-      console.log('No changes were made');
-      return true;
-    }
-  } catch (error) {
-    console.error('Unable to modify the user data!', error);
-    return false;
-  }
-}
-
-export { validate_user, create_user, fetch_user, username_exist, modify_user, fetch_all_users };

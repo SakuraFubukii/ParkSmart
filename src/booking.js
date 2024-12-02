@@ -38,13 +38,13 @@ router.post('/data/Reservations.json', form.none(), async (req, res) => {
     const reservations = JSON.parse(data);
 
     // Determine the next reservation ID
-    const lastId = reservations.length > 0 ? reservations[reservations.length - 1]._id : null;
+    const lastId = reservations.length > 0 ? reservations[reservations.length - 1].id : null;
     const newId = lastId ? `res_${parseInt(lastId.split('_')[1]) + 1}` : 'res_1'; // Increment the ID
     console.log('New reservation ID:', newId); // Log the new reservation ID
 
     // Create the new reservation object
     const newReservation = {
-      _id: newId,
+      id: newId,
       user_id,
       parkId,
       date,

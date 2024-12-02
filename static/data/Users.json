@@ -31,5 +31,16 @@
     "role": "user",
     "enabled": true,
     "profile-image": null
+  },
+  {
+    "user_id": "test1",
+    "nickname": "666",
+    "email": "66@polyu",
+    "gender": "female",
+    "password": "66666666",
+    "birthdate": "2024-11-25",
+    "role": "user",
+    "enabled": true,
+    "profile-image": null
   }
 ]

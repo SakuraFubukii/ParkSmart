@@ -49,12 +49,12 @@ router.post('/', async (req, res) => {
 
       // Calculate the next ID for the reservation
       const maxId = reservations.reduce((max, reservation) => {
-        const idNum = parseInt(reservation._id.split('_')[1], 10);
+        const idNum = parseInt(reservation.id.split('_')[1], 10);
         return Math.max(max, idNum);
       }, 0);
 
       // Assign a new ID to the reservation data
-      reservationData._id = `res_${maxId + 1}`;
+      reservationData.id = `res_${maxId + 1}`;
       reservations.push(reservationData);
 
       // Write the updated reservations back to the file
