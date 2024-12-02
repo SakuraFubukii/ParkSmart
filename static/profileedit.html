@@ -3,22 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link rel="stylesheet" href="styles/user.css" />
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
     <title>Edit Profile</title>
-    <script src="js/user.js" defer></script>
+    <script src="js/profileedit.js" defer></script>
   </head>
 
   <header class="text-white">
@@ -59,7 +52,7 @@
       <h1 class="text-center py-3 bg-secondary text-white">Profile Editing</h1>
       <div class="edit-container d-flex justify-content-center">
         <div class="card p-4 shadow-lg edit-card">
-          <form action="/auth/profileedit" method="POST" enctype="multipart/form-data">
+          <form id="editProfileForm" action="/auth/profileedit" method="POST" enctype="multipart/form-data">
             <div class="mb-3">
               <label for="nickname" class="form-label">Nickname</label>
               <input
@@ -80,7 +73,7 @@
             </div>
             <div class="mb-3">
               <label for="currentPassword" class="form-label">Current Password</label>
-              <input type="password" class="form-control" id="currentPassword" name="currentPassword" />
+              <input type="password" class="form-control" id="currentPassword" name="currentPassword" required />
             </div>
             <div class="mb-3">
               <label for="password" class="form-label">Password</label>
@@ -102,7 +95,6 @@
             </div>
             <div class="mb-3">
               <label for="file">Upload your profile picture</label>
-              <br />
               <input type="file" id="profilepic" name="profilepic" />
             </div>
             <div>
@@ -117,7 +109,7 @@
       <p class="text-center pt-3 pb-2 m-0">&copy; POLYU-PARK</p>
       <p class="text-center pb-3 m-0"><span id="time"></span></p>
     </footer>
-    <script class="bg-black text-white text-center py-3 m-0">
+    <script>
       function updateTime() {
         document.getElementById('time').textContent = new Date().toLocaleString('en-HK', {
           timeZone: 'Asia/Hong_Kong',
@@ -126,6 +118,5 @@
       setInterval(updateTime, 1000);
       updateTime();
     </script>
-    <script src="js/profileedit.js"></script>
   </body>
 </html>

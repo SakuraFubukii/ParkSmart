@@ -113,6 +113,10 @@ route.post('/login', form.none(), async (req, res) => {
     req.session.username = user.nickname;
     req.session.role = user.role;
     req.session.user_id = user.user_id;
+    req.session.email = user.email; // 新增
+    req.session.gender = user.gender; // 新增
+    req.session.birthdate = user.birthdate; // 新增
+    req.session['profile-image'] = user['profile-image']; // 新增
     req.session.logged = true;
     req.session.loginTime = new Date();
 
@@ -122,6 +126,10 @@ route.post('/login', form.none(), async (req, res) => {
         nickname: user.nickname,
         role: user.role,
         user_id: user.user_id,
+        email: user.email,
+        gender: user.gender,
+        birthdate: user.birthdate,
+        'profile-image': user['profile-image'],
       },
     });
   } else {
@@ -153,5 +161,79 @@ route.get('/check-status', (req, res) => {
   }
   return res.json({ logged: false });
 });
+
+// Profile route to get user information
+route.get('/profile', (req, res) => {
+  if (req.session.logged) {
+    return res.json({
+      status: 'success',
+      user: {
+        user_id: req.session.user_id,
+        nickname: req.session.username,
+        role: req.session.role,
+        email: req.session.email,
+        gender: req.session.gender,
+        birthdate: req.session.birthdate,
+        'profile-image': req.session['profile-image'],
+      },
+    });
+  } else {
+    return res.status(401).json({ status: 'failed', message: 'User not logged in' });
+  }
+});
+
+// Profile edit route
+route.post(
+  '/profileedit',
+  form.fields([
+    { name: 'nickname' },
+    { name: 'email' },
+    { name: 'currentPassword' },
+    { name: 'password' },
+    { name: 'profilepic' },
+  ]),
+  async (req, res) => {
+    if (!req.session.logged) {
+      return res.status(401).json({ status: 'failed', message: 'User not logged in' });
+    }
+
+    const { nickname, email, currentPassword, password } = req.body;
+    const userId = req.session.user_id;
+
+    try {
+      const data = await fs.readFile(usersFilePath, 'utf8');
+      const users = JSON.parse(data);
+
+      const userIndex = users.findIndex((user) => user.user_id === userId);
+      if (userIndex === -1) {
+        return res.status(404).json({ status: 'failed', message: 'User not found' });
+      }
+
+      const user = users[userIndex];
+
+      if (user.password !== currentPassword) {
+        return res.status(401).json({ status: 'failed', message: 'Incorrect current password' });
+      }
+
+      if (nickname) user.nickname = nickname;
+      if (email) user.email = email;
+      if (password) user.password = password;
+
+      if (req.files.profilepic) {
+        user['profile-image'] = `assets/${req.files.profilepic[0].originalname}`;
+      }
+
+      await fs.writeFile(usersFilePath, JSON.stringify(users, null, 2));
+
+      req.session.username = user.nickname;
+      req.session.email = user.email;
+
+      return res.json({ status: 'success', user });
+    } catch (error) {
+      console.error('Error updating user:', error);
+      return res.status(500).json({ status: 'failed', message: 'Server error' });
+    }
+  }
+);
 
 export default route;

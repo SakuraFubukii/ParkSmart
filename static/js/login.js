@@ -34,7 +34,7 @@ document.getElementById('loginBtn').addEventListener('click', async () => {
   }
 });
 
-// 登出功能
+// Logout
 document.getElementById('logoutBtn').addEventListener('click', async () => {
   try {
     const response = await fetch('/auth/logout', {
@@ -43,8 +43,8 @@ document.getElementById('logoutBtn').addEventListener('click', async () => {
 
     if (response.ok) {
       alert('Logged out successfully');
-      sessionStorage.removeItem('userid'); // 清除 user_id
-      window.location.href = '/login.html'; // 重定向到登录页面
+      sessionStorage.removeItem('userid'); // clear user_id
+      window.location.href = '/login.html';
     } else {
       const result = await response.json();
       alert(result.message || 'Logout failed');

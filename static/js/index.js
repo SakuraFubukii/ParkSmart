@@ -2,7 +2,7 @@ async function checkLoginStatus() {
   try {
     const response = await fetch('/auth/check-status', {
       method: 'GET',
-      credentials: 'include', // Include cookies for session management
+      credentials: 'include',
     });
 
     if (response.ok) {
@@ -10,6 +10,7 @@ async function checkLoginStatus() {
       const authBtn = document.getElementById('authBtn');
       const btnText = authBtn.querySelector('strong');
       const registerBtn = document.getElementById('registerBtn');
+      const userLink = document.getElementById('userLink');
 
       if (result.logged) {
         btnText.textContent = 'Logout';
@@ -17,7 +18,7 @@ async function checkLoginStatus() {
           const logoutResponse = await fetch('/auth/logout', { method: 'POST', credentials: 'include' });
           if (logoutResponse.ok) {
             alert('Logged out successfully');
-            window.location.reload(); // Reload to update the UI
+            window.location.reload();
           } else {
             alert('Logout failed');
           }
@@ -29,6 +30,7 @@ async function checkLoginStatus() {
         authBtn.onclick = () => window.open('login.html', '_self');
         registerBtn.textContent = 'Register';
         registerBtn.onclick = () => window.open('register.html', '_self');
+        userLink.style.display = 'none'; // Hide user link if not logged in
       }
     }
   } catch (error) {
@@ -44,4 +46,4 @@ function updateTime() {
 
 setInterval(updateTime, 1000);
 updateTime();
-checkLoginStatus(); // Check login status on page load
+checkLoginStatus();
