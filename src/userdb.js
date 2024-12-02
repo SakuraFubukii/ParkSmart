@@ -108,5 +108,3 @@ function setupFileWatchers(db) {
     }
   });
 }
-
-init_db().catch(console.dir);
