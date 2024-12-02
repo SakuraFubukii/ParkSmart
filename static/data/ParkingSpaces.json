@@ -7,7 +7,7 @@
   {
     "parkid": 2,
     "halfday_price": "50",
-    "fullday_price": "70"
+    "fullday_price": "90"
   },
   {
     "parkid": 3,
@@ -16,13 +16,13 @@
   },
   {
     "parkid": 4,
-    "halfday_price": "90",
-    "fullday_price": "50"
+    "halfday_price": "60",
+    "fullday_price": "90"
   },
   {
     "parkid": 5,
-    "halfday_price": "30",
-    "fullday_price": "90"
+    "halfday_price": "50",
+    "fullday_price": "100"
   },
   {
     "parkid": 6,
@@ -36,8 +36,8 @@
   },
   {
     "parkid": 8,
-    "halfday_price": 80,
-    "fullday_price": 100
+    "halfday_price": "50",
+    "fullday_price": "100"
   },
   {
     "parkid": 9,
@@ -71,8 +71,8 @@
   },
   {
     "parkid": 15,
-    "halfday_price": 80,
-    "fullday_price": 100
+    "halfday_price": "50",
+    "fullday_price": "90"
   },
   {
     "parkid": 16,
@@ -86,8 +86,8 @@
   },
   {
     "parkid": 18,
-    "halfday_price": 80,
-    "fullday_price": 100
+    "halfday_price": "70",
+    "fullday_price": "90"
   },
   {
     "parkid": 19,
@@ -116,8 +116,8 @@
   },
   {
     "parkid": 24,
-    "halfday_price": 80,
-    "fullday_price": 100
+    "halfday_price": "50",
+    "fullday_price": "100"
   },
   {
     "parkid": 25,
