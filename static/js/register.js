@@ -1,3 +1,11 @@
+function updateTime() {
+  document.getElementById('time').textContent = new Date().toLocaleString('en-HK', {
+    timeZone: 'Asia/Hong_Kong',
+  });
+}
+setInterval(updateTime, 1000);
+updateTime();
+
 document.getElementById('registerBtn').addEventListener('click', async () => {
   const userid = document.getElementById('userid').value;
   const nickname = document.getElementById('nickname').value;
@@ -52,10 +60,14 @@ document.getElementById('registerBtn').addEventListener('click', async () => {
     const result = await response.json();
 
     if (response.ok && result.status === 'success') {
-      alert(`Welcome, ${result.user.username}!\nYou can login with your account now!`);
+      alert(`Welcome, ${result.user.nickname}!\nYou can login with your account now!`);
       window.open('/login.html', '_self');
     } else {
-      alert(result.message);
+      alert(result.message); // Show error message from server
+      if (result.status === 'failed' && result.message.includes('UserID already exists')) {
+        document.getElementById('userid').value = ''; // Clear input for user to re-enter
+        document.getElementById('userid').focus(); // Focus back on the userID input
+      }
     }
   } catch (error) {
     console.error('Error:', error);

@@ -20,5 +20,16 @@
     "role": "admin",
     "enabled": true,
     "profile-image": "assets/profile_image1.jpg"
+  },
+  {
+    "user_id": "wzt",
+    "nickname": "Sakura",
+    "email": "22101515d@connect.polyu.hk",
+    "gender": "male",
+    "password": "123",
+    "birthdate": "2024-11-26",
+    "role": "user",
+    "enabled": true,
+    "profile-image": null
   }
 ]

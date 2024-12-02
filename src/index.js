@@ -4,6 +4,7 @@ import path from 'path';
 import booking from './booking.js';
 import parkingManagement from './parkingManagement.js';
 import events from './event.js';
+import login from './login.js';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -28,6 +29,7 @@ app.use('/book', booking);
 app.use('/manage', parkingManagement);
 app.use('/data', express.static(path.join(__dirname, 'data')));
 app.use('/event', events);
+app.use('/auth', login);
 
 app.get('/booking', (req, res) => {
   res.sendFile(path.join(__dirname, 'booking.html'));

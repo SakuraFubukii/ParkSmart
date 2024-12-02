@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Event Management - Parking Management System</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-
     <script src="https://code.jquery.com/jquery-3.5.2.min.js"></script>
     <script src="js/event.js"></script>
   </head>
@@ -13,6 +12,11 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="index.html">Home</a>
       <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="parkingManagement.html">Parking Management</a>
+          </li>
+        </ul>
         <a class="btn btn-outline-light ml-auto" href="logout.html" id="logout">Logout</a>
       </div>
     </nav>
@@ -85,7 +89,7 @@
           <label for="eventDescription">Description</label>
           <textarea class="form-control" id="eventDescription" rows="3"></textarea>
         </div>
-        <button id="eventForm" class="btn btn-primary">Create Event</button>
+        <button id="createEventButton" class="btn btn-primary">Create Event</button>
       </form>
     </div>
   </body>

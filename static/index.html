@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Main</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"></script>
+    <script src="js/index.js" defer></script>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background-color: #f8f9fa;
+      }
+      header {
+        background-color: rgba(5, 5, 5, 0.9);
+        color: white;
+        padding: 20px 0;
+      }
+      footer {
+        background-color: rgba(5, 5, 5, 0.9);
+        color: white;
+        margin-top: auto;
+        padding: 10px 0;
+      }
+      .btn-custom {
+        width: 150px;
+        height: 70px;
+        line-height: 60px;
+        margin: 10px;
+      }
+      .match-image {
+        width: 100%;
+        max-width: 800px;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .time {
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="text-center">
+      <h1 class="display-4">POLYU-PARK</h1>
+    </header>
+    <div class="container text-center py-5 flex-grow-1">
+      <div class="py-4">
+        <img src="assets/main.jpg" class="match-image" alt="Main Image" />
+      </div>
+      <div class="py-3">
+        <button id="authBtn" class="btn btn-primary btn-custom">
+          <strong></strong>
+        </button>
+        <button class="btn btn-secondary btn-custom" id="registerBtn">
+          <strong>Register</strong>
+        </button>
+      </div>
+    </div>
+    <footer>
+      <p class="text-center m-0">&copy; POLYU-PARK</p>
+      <p class="text-center time m-0"><span id="time"></span></p>
+    </footer>
+  </body>
+</html>
