@@ -13,7 +13,6 @@
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="styles/user.css" />
     <script src="js/index.js" defer></script>
     <style>
       body {
@@ -50,39 +49,19 @@
         font-size: 14px;
       }
       .navbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        justify-content: flex-end;
       }
     </style>
   </head>
   <body>
-    <header class="text-white">
-      <nav class="navbar navbar-expand-lg navbar-dark">
+    <header class="text-center">
+      <h1 class="display-4">POLYU-PARK</h1>
+      <nav class="navbar navbar-expand">
         <div class="container-fluid">
-          <a href="index.html" class="navbar-brand">
-            <img src="assets/logo.jpg" alt="Company Logo" class="header-logo" />
-          </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
+          <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="index.html">Home</a>
-              </li>
-              <li class="nav-item">
-                <div class="profile-container">
-                  <img class="profile-picture" src="assets/Unknown.png" alt="User Profile Picture" />
-                  <a class="nav-link" href="user.html">Profile</a>
-                </div>
+                <a class="nav-link text-white" id="userLink" href="user.html">User Info</a>
               </li>
             </ul>
           </div>
